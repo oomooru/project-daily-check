@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Checkbox } from '../atoms/Checkbox';
 import { Text } from '../atoms/Text';
+import { colors } from '../../constants/Colors';
 
 interface TodoItemProps {
   text: string;
@@ -36,17 +37,18 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    marginLeft: 12
+    marginLeft: 12,
+    color: colors.textWhite,
   },
   completedText: {
     flex: 1,
     textDecorationLine: 'line-through',
-    color: '#999',
+    color: colors.secondary,
     marginLeft: 12
   },
   deleteText: {
     fontSize: 24,
-    color: '#ff3b30',
+    color: colors.primary,
     marginLeft: 12
   }
 });

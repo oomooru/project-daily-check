@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text as RNText, TextStyle } from 'react-native';
+import { colors } from '../../constants/Colors';
 
 interface TextProps {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ export const Text: React.FC<TextProps> = ({
   variant = 'body' 
 }) => {
   const variantStyles = {
-    title: { textAlign: 'center', fontSize: 24, fontWeight: 'bold' },
+    title: { textAlign: 'center', fontSize: 24, fontWeight: 'bold', color: colors.primary },
     body: { fontSize: 16 },
     caption: { fontSize: 12, color: '#666' }
   };

@@ -7,6 +7,7 @@ import {
   TextStyle,
   ActivityIndicator
 } from 'react-native';
+import { colors } from '../../constants/Colors';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline';
 
@@ -32,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const buttonStyles = StyleSheet.create({
     primary: {
-      backgroundColor: disabled ? '#cccccc' : '#007AFF',
+      backgroundColor: disabled ? colors.secondary : colors.primary,
       paddingVertical: 12,
       paddingHorizontal: 24,
       borderRadius: 8,
@@ -55,13 +56,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const textStyles = StyleSheet.create({
     primary: {
-      color: '#FFFFFF',
+      color: colors.textBlack,
       fontSize: 16,
       fontWeight: '600',
       textAlign: 'center',
     },
     secondary: {
-      color: '#FFFFFF',
+      color: colors.textWhite,
       fontSize: 16,
       fontWeight: '600',
       textAlign: 'center',

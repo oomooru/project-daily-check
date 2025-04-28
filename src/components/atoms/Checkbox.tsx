@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { colors } from '../../constants/Colors';
 
 interface CheckboxProps {
   checked: boolean;
@@ -19,18 +20,18 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderWidth: 2,
-    borderColor: '#ccc',
+    borderColor: colors.secondary,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center'
   },
   checked: {
-    borderColor: '#007AFF'
+    borderColor: colors.primary,
   },
   inner: {
     width: 12,
     height: 12,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     borderRadius: 2
   }
 });
