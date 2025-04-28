@@ -25,7 +25,7 @@ export const MainPage = () => {
 
   return (
     <MainTemplate
-      header={<Text variant="title">Todo App</Text>}
+      header={<Text variant="title">Todo</Text>}
       content={
         <>
           <InputWithButton
