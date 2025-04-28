@@ -13,7 +13,7 @@ export const Text: React.FC<TextProps> = ({
   variant = 'body' 
 }) => {
   const variantStyles = {
-    title: { fontSize: 24, fontWeight: 'bold' },
+    title: { textAlign: 'center', fontSize: 24, fontWeight: 'bold' },
     body: { fontSize: 16 },
     caption: { fontSize: 12, color: '#666' }
   };
