@@ -4,6 +4,9 @@ import { InputWithButton } from '../molecules/InputWithButton';
 import { TodoList } from '../organisms/TodoList';
 import { Text } from '../atoms/Text';
 
+//Svg
+import SvgLogo from '../../../assets/images/logo.svg';
+
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<{ id: string; text: string; completed: boolean }>>([]);
 
@@ -25,7 +28,7 @@ export const MainPage = () => {
 
   return (
     <MainTemplate
-      header={<Text variant="title">Todo</Text>}
+      header={<SvgLogo width={184} height={33}/>}
       content={
         <>
           <InputWithButton
