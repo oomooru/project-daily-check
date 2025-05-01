@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors } from '../../constants/Colors';
 
 interface MainTemplateProps {
   header: React.ReactNode;
@@ -26,15 +27,16 @@ export const MainTemplate: React.FC<MainTemplateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: colors.background
   },
   statusBarPlaceHolder: {
-    backgroundColor: '#fff'
+    backgroundColor: colors.background
   },
   header: {
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    borderBottomColor: colors.secondary
   },
   content: {
     flex: 1

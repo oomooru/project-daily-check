@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Button } from '../atoms/Button';
+import { colors } from '../../constants/Colors';
 
 interface InputWithButtonProps {
   placeholder: string;
@@ -25,6 +26,7 @@ export const InputWithButton: React.FC<InputWithButtonProps> = ({
       <TextInput
         style={styles.input}
         placeholder={placeholder}
+        placeholderTextColor={colors.secondary}
         value={text}
         onChangeText={setText}
       />
@@ -44,8 +46,9 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    color: colors.textWhite,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: colors.primary,
     borderRadius: 4,
     padding: 12,
     marginRight: 8

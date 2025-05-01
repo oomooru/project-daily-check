@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MainTemplate } from '../templates/MainTemplate';
 import { InputWithButton } from '../molecules/InputWithButton';
 import { TodoList } from '../organisms/TodoList';
-import { Text } from '../atoms/Text';
+import SvgIcon from '../atoms/SvgIcon';
 
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<{ id: string; text: string; completed: boolean }>>([]);
@@ -25,7 +25,9 @@ export const MainPage = () => {
 
   return (
     <MainTemplate
-      header={<Text variant="title">Todo</Text>}
+      header={
+        <SvgIcon name="Logo" width={184} height={33} />
+      }
       content={
         <>
           <InputWithButton

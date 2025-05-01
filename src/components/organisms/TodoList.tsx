@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { TodoItem } from '../molecules/TodoItem';
 
 interface Todo {
@@ -26,6 +26,7 @@ export const TodoList: React.FC<TodoListProps> = ({
       <TodoItem
         text={item.text}
         completed={item.completed}
+        tags={['태그A', '태그B', '태그C']}
         onToggle={() => onToggle(item.id)}
         onDelete={() => onDelete(item.id)}
       />
