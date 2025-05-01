@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flex: 1,
-    justifyContent: 'center'
   },
   text: {
     flex: 1,
