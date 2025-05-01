@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Checkbox } from '../atoms/Checkbox';
 import { Text } from '../atoms/Text';
 import { colors } from '../../constants/Colors';
+import SvgIcon from '../atoms/SvgIcon';
 
 interface TodoItemProps {
   text: string;
@@ -30,6 +31,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
     </View>
 
     <View style={styles.tagBox}>
+      <View style={{marginRight: 4, marginBottom: 4, justifyContent: 'center'}}>
+        <SvgIcon name='IconClock' width={24} height={24} />
+      </View>
+
       {tags.map((item, index) => (
         <View key={index} style={styles.tag}>
           <Text 
@@ -55,6 +60,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 8,
     padding: 8,
+    paddingBottom: 4,
     backgroundColor: colors.primary,
     borderRadius: 16,
   },
@@ -68,7 +74,9 @@ const styles = StyleSheet.create({
   },
   tagBox: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     flex: 1,
+    justifyContent: 'center'
   },
   text: {
     flex: 1,
@@ -79,6 +87,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     marginRight: 4,
+    marginBottom: 4,
     backgroundColor: colors.secondary,
     borderRadius: 8
   },
