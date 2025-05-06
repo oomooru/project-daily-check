@@ -24,9 +24,10 @@ export const TodoList: React.FC<TodoListProps> = ({
     keyExtractor={item => item.id}
     renderItem={({ item }) => (
       <TodoItem
+        key={`todoitem-${item.id}`}
         text={item.text}
         completed={item.completed}
-        tags={['태그A', '태그B', '태그C']}
+        tags={['ReactNative', 'TypeScript', 'ExpoCLI', '개발', 'Todo']}
         onToggle={() => onToggle(item.id)}
         onDelete={() => onDelete(item.id)}
       />
