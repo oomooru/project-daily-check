@@ -16,9 +16,9 @@ export const Text: React.FC<TextProps> = ({
   onLayout
 }) => {
   const variantStyles = {
-    title: { textAlign: 'center', fontSize: 24, fontWeight: 'bold', color: colors.primary },
+    title: { fontSize: 16, fontWeight: 'bold' },
     body: { fontSize: 16 },
-    caption: { fontSize: 12, color: '#666' }
+    caption: { fontSize: 12 }
   };
 
   return (
