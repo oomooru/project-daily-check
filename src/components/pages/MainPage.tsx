@@ -5,10 +5,10 @@ import { TodoList } from '../organisms/TodoList';
 import SvgIcon from '../atoms/SvgIcon';
 
 export const MainPage = () => {
-  const [todos, setTodos] = useState<Array<{ id: string; text: string; completed: boolean }>>([]);
+  const [todos, setTodos] = useState<Array<{ id: string; text: string; tags: string[]; completed: boolean }>>([]);
 
   const addTodo = (text: string) => {
-    setTodos([...todos, { id: Date.now().toString(), text, completed: false }]);
+    setTodos([...todos, { id: Date.now().toString(), text, tags: ['태그A', '태그B', '태그C'], completed: false }]);
   };
 
   const toggleTodo = (id: string) => {
@@ -20,6 +20,7 @@ export const MainPage = () => {
   };
 
   const deleteTodo = (id: string) => {
+    console.log(`TODO 삭제 : id = ${id}`);
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
@@ -36,8 +37,8 @@ export const MainPage = () => {
             onSubmit={addTodo}
           />
           <TodoList
-            todos={todos}
-            onToggle={toggleTodo}
+            todoItems={todos}
+            onToggle={deleteTodo} // 나중에 ToggleTodo로 변경
             onDelete={deleteTodo}
           />
         </>

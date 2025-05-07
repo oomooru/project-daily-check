@@ -9,7 +9,6 @@ interface TodoItemProps {
   text: string;
   completed: boolean;
   tags: string[];
-  onToggle: () => void;
   onDelete: () => void;
 }
 
@@ -17,7 +16,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   text,
   completed,
   tags,
-  onToggle,
   onDelete,
 }) => {
   return (
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginHorizontal: 16,
     marginVertical: 8,
-    //padding: 8,
     paddingBottom: 4,
     backgroundColor: colors.primary,
     borderRadius: 8,
