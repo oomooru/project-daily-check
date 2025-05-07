@@ -27,7 +27,7 @@ const SwipeableItem = ({
   onDelete: () => void;
 }) => {
   const translateX = useSharedValue(0);
-  const MAX_SWIPE = 200;
+  const MAX_SWIPE = 300;
   const COMPLETE_THRESHOLD = 100;
 
   const gesture = Gesture.Pan()
@@ -48,7 +48,7 @@ const SwipeableItem = ({
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
-    opacity: 1 - translateX.value / MAX_SWIPE / 2
+    opacity: 1 - translateX.value / MAX_SWIPE
   }));
 
   return (
