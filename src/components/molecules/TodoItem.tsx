@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Checkbox } from '../atoms/Checkbox';
-import { Text } from '../atoms/Text';
-import { colors } from '../../constants/Colors';
-import SvgIcon from '../atoms/SvgIcon';
+import React from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text } from "../atoms/Text";
+import { colors } from "../../constants/Colors";
+import SvgIcon from "../atoms/SvgIcon";
+import { TagBox } from "../atoms/TagBox";
 
 interface TodoItemProps {
   text: string;
@@ -13,91 +13,75 @@ interface TodoItemProps {
   onDelete: () => void;
 }
 
-export const TodoItem: React.FC<TodoItemProps> = ({ 
-  text, 
+export const TodoItem: React.FC<TodoItemProps> = ({
+  text,
   completed,
   tags,
-  onToggle, 
-  onDelete 
-}) => (
-  <View style={styles.container}>
+  onToggle,
+  onDelete,
+}) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.textBox}>
+        <View style={{ paddingRight: 8 }}>
+          <SvgIcon
+            name="IconClock"
+            width={24}
+            height={24}
+            color={colors.textWhite}
+          />
+        </View>
 
-    {/*<Checkbox checked={completed} onToggle={onToggle} />*/}
+        <Text
+          variant="title"
+          style={completed ? styles.completedText : styles.text}
+        >
+          {text}
+        </Text>
 
-    <View style={styles.textBox}>
-      <Text variant="body" style={completed ? styles.completedText : styles.text}>
-        {text}
-      </Text>
-    </View>
-
-    <View style={styles.tagBox}>
-      <View style={{marginRight: 4, marginBottom: 4, justifyContent: 'center'}}>
-        <SvgIcon name='IconClock' width={24} height={24} />
+        <TouchableOpacity onPress={onDelete}>
+          <Text style={styles.deleteText}>×</Text>
+        </TouchableOpacity>
       </View>
 
-      {tags.map((item, index) => (
-        <View key={index} style={styles.tag}>
-          <Text 
-            variant="body" 
-            style={{textAlign: 'center', color: colors.textWhite}}
-          >
-            {'#' + item}
-          </Text>
-        </View>
-      ))}
-
-      <TouchableOpacity onPress={onDelete}>
-        <Text style={styles.deleteText}>×</Text>
-      </TouchableOpacity>
-    </View>    
-
-  </View>
-);
+      <TagBox tags={tags} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginHorizontal: 16,
     marginVertical: 8,
-    padding: 8,
+    //padding: 8,
     paddingBottom: 4,
     backgroundColor: colors.primary,
-    borderRadius: 16,
+    borderRadius: 8,
   },
   textBox: {
-    flex: 1,
-    width: '100%',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    width: "100%",
     padding: 8,
     marginBottom: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     backgroundColor: colors.secondary,
-    borderRadius: 8
-  },
-  tagBox: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    flex: 1,
   },
   text: {
     flex: 1,
-    textAlign: 'center',
-    color: colors.textWhite
-  },
-  tag: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginRight: 4,
-    marginBottom: 4,
-    backgroundColor: colors.secondary,
-    borderRadius: 8
+    paddingVertical: 2,
+    color: colors.textWhite,
   },
   completedText: {
     flex: 1,
-    textDecorationLine: 'line-through',
+    textDecorationLine: "line-through",
     color: colors.secondary,
-    marginLeft: 12
   },
   deleteText: {
-    fontSize: 24,
-    color: colors.secondary
-  }
+    fontSize: 20,
+    color: colors.textWhite,
+  },
 });
