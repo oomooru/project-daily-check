@@ -19,7 +19,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   onDelete,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, completed ? styles.completed : {}]}>
       <View style={styles.textBox}>
         <View style={{ paddingRight: 8 }}>
           <SvgIcon
@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 8,
   },
+  completed: {
+    opacity: 0.5
+  },
   textBox: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -74,8 +77,9 @@ const styles = StyleSheet.create({
   },
   completedText: {
     flex: 1,
+    paddingVertical: 2,
     textDecorationLine: "line-through",
-    color: colors.secondary,
+    color: colors.textWhite,
   },
   deleteText: {
     fontSize: 20,

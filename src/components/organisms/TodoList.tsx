@@ -1,8 +1,9 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { TodoItem } from '../molecules/TodoItem';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS, withTiming } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS, withTiming, LinearTransition, SlideInRight, FadeOut, Easing } from 'react-native-reanimated';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
 interface TodoItem {
   id: string;
@@ -17,6 +18,16 @@ interface TodoListProps {
   onDelete: (id: string) => void;
 }
 
+const triggerHaptic = async () => {
+  try {
+    await Haptics.impactAsync(
+      Haptics.ImpactFeedbackStyle.Medium
+    );
+  } catch (error) {
+    console.warn("Haptic error:", error);
+  }
+};
+
 const SwipeableItem = ({
   item,
   onSwipeComplete,
@@ -27,8 +38,8 @@ const SwipeableItem = ({
   onDelete: () => void;
 }) => {
   const translateX = useSharedValue(0);
-  const MAX_SWIPE = 300;
-  const COMPLETE_THRESHOLD = 100;
+  const MAX_SWIPE = 50;
+  const COMPLETE_THRESHOLD = 50;
 
   const gesture = Gesture.Pan()
     .onUpdate((e) => {
@@ -38,8 +49,12 @@ const SwipeableItem = ({
     })
     .onEnd((e) => {
       if (e.translationX > COMPLETE_THRESHOLD) {
-        translateX.value = withTiming(MAX_SWIPE * 1.5, { duration: 200 }, (finished) => {
-          if (finished) runOnJS(onSwipeComplete)();
+        runOnJS(triggerHaptic)();
+
+        translateX.value = withSpring(MAX_SWIPE, { duration: 200 }, () => {
+          runOnJS(onSwipeComplete)();
+          
+          translateX.value = withSpring(0, { duration: 300 });
         });
       } else {
         translateX.value = withSpring(0);
@@ -47,8 +62,7 @@ const SwipeableItem = ({
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-    opacity: 1 - translateX.value / MAX_SWIPE
+    transform: [{ translateX: translateX.value }]
   }));
 
   return (
@@ -74,14 +88,19 @@ export const TodoList: React.FC<TodoListProps> = ({
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <FlatList
+      <Animated.FlatList
         data={todoItems}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <SwipeableItem
-            item={item}
-            onSwipeComplete={() => onDelete(item.id)} 
-            onDelete={() => onDelete(item.id)}/>
+          <Animated.View
+            layout={LinearTransition.duration(200)}
+            entering={SlideInRight.easing(Easing.back(1)).duration(200)}
+            exiting={FadeOut}>
+            <SwipeableItem
+              item={item}
+              onSwipeComplete={() => onToggle(item.id)} 
+              onDelete={() => onDelete(item.id)} />
+          </Animated.View>
         )}
       />
     </GestureHandlerRootView>

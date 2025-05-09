@@ -20,7 +20,6 @@ export const MainPage = () => {
   };
 
   const deleteTodo = (id: string) => {
-    console.log(`TODO 삭제 : id = ${id}`);
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
@@ -38,7 +37,7 @@ export const MainPage = () => {
           />
           <TodoList
             todoItems={todos}
-            onToggle={deleteTodo} // 나중에 ToggleTodo로 변경
+            onToggle={toggleTodo}
             onDelete={deleteTodo}
           />
         </>
