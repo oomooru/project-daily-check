@@ -9,7 +9,6 @@ interface TodoItemProps {
   text: string;
   completed: boolean;
   tags: string[];
-  onToggle: () => void;
   onDelete: () => void;
 }
 
@@ -17,11 +16,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   text,
   completed,
   tags,
-  onToggle,
   onDelete,
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, completed ? styles.completed : {}]}>
       <View style={styles.textBox}>
         <View style={{ paddingRight: 8 }}>
           <SvgIcon
@@ -54,10 +52,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginHorizontal: 16,
     marginVertical: 8,
-    //padding: 8,
     paddingBottom: 4,
     backgroundColor: colors.primary,
     borderRadius: 8,
+  },
+  completed: {
+    opacity: 0.5
   },
   textBox: {
     flexDirection: "row",
@@ -77,8 +77,9 @@ const styles = StyleSheet.create({
   },
   completedText: {
     flex: 1,
+    paddingVertical: 2,
     textDecorationLine: "line-through",
-    color: colors.secondary,
+    color: colors.textWhite,
   },
   deleteText: {
     fontSize: 20,
