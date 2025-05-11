@@ -9,6 +9,7 @@ interface TodoItemProps {
   text: string;
   completed: boolean;
   tags: string[];
+  onToggle: () => void;
   onDelete: () => void;
 }
 
@@ -16,10 +17,13 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   text,
   completed,
   tags,
+  onToggle,
   onDelete,
 }) => {
   return (
-    <View style={[styles.container, completed ? styles.completed : {}]}>
+    <TouchableOpacity 
+      style={[styles.container, completed ? styles.completed : {}]}
+      onPress={onToggle}>
       <View style={styles.textBox}>
         <View style={{ paddingRight: 8 }}>
           <SvgIcon
@@ -43,7 +47,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       </View>
 
       <TagBox tags={tags} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

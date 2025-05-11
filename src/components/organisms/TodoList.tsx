@@ -1,21 +1,17 @@
 import React from "react";
-import { FlatList } from "react-native";
-import { TodoItem } from "../molecules/TodoItem";
-import Animated, {
-  useSharedValue,
+import { StyleSheet, View } from "react-native";
+import Reanimated, {
+  SharedValue,
   useAnimatedStyle,
-  withSpring,
-  runOnJS,
-  LinearTransition,
-  SlideInRight,
-  FadeOut,
-  Easing,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
-  Gesture,
-  GestureDetector,
+  ScrollView,
 } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import * as Haptics from "expo-haptics";
+import { TodoItem } from "../molecules/TodoItem";
+import { Text } from "../atoms/Text";
+import { colors } from "../../constants/Colors";
 
 interface TodoItem {
   id: string;
@@ -38,57 +34,25 @@ const triggerHaptic = async () => {
   }
 };
 
-const SwipeableItem = ({
-  item,
-  onSwipeComplete,
-  onDelete,
-}: {
-  item: TodoItem;
-  onSwipeComplete: () => void;
-  onDelete: () => void;
-}) => {
-  const translateX = useSharedValue(0);
-  const MAX_SWIPE = 50;
-  const COMPLETE_THRESHOLD = 50;
+function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
+  const styleAnimation = useAnimatedStyle(() => {
 
-  const gesture = Gesture.Pan()
-    .onUpdate((e) => {
-      if (e.translationX > 0) {
-        translateX.value = Math.min(e.translationX, MAX_SWIPE);
-      }
-    })
-    .onEnd((e) => {
-      if (e.translationX > COMPLETE_THRESHOLD) {
-        runOnJS(triggerHaptic)();
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 50);
 
-        translateX.value = withSpring(MAX_SWIPE, { duration: 200 }, () => {
-          runOnJS(onSwipeComplete)();
-
-          translateX.value = withSpring(0, { duration: 300 });
-        });
-      } else {
-        translateX.value = withSpring(0);
-      }
-    });
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
+    return {
+      transform: [{ translateX: drag.value + width }],
+      width: width
+    };
+  });
 
   return (
-    <GestureDetector gesture={gesture}>
-      <Animated.View style={animatedStyle}>
-        <TodoItem
-          key={`todoitem-${item.id}`}
-          text={item.text}
-          completed={item.completed}
-          tags={["ReactNative", "TypeScript", "ExpoCLI", "개발", "Todo"]}
-          onDelete={onDelete}
-        />
-      </Animated.View>
-    </GestureDetector>
+    <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
+      <View style={styles.rightAction}>
+        <Text>{'삭제'}</Text>
+      </View>
+    </Reanimated.View>
   );
-};
+}
 
 export const TodoList: React.FC<TodoListProps> = ({
   todoItems,
@@ -96,22 +60,41 @@ export const TodoList: React.FC<TodoListProps> = ({
   onDelete,
 }) => {
   return (
-    <Animated.FlatList
-      data={todoItems}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <Animated.View
-          layout={LinearTransition.duration(200)}
-          entering={SlideInRight.easing(Easing.back(1)).duration(200)}
-          exiting={FadeOut}
+    <ScrollView>
+      {todoItems.map((item) => (
+        <Swipeable
+          key={item.id}
+          rightThreshold={40}
+          renderRightActions={RightAction}
+          overshootFriction={6}
         >
-          <SwipeableItem
-            item={item}
-            onSwipeComplete={() => onToggle(item.id)}
+          <TodoItem
+            key={`todoitem-${item.id}`}
+            text={item.text}
+            completed={item.completed}
+            tags={item.tags}
+            onToggle={() => onToggle(item.id)}
             onDelete={() => onDelete(item.id)}
           />
-        </Animated.View>
-      )}
-    />
+        </Swipeable>
+      ))}
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  rightActionContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 8,
+    backgroundColor: colors.delete,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
+  rightAction: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+});
