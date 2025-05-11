@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, StatusBar } from 'react-native';
-import { MainPage } from './src/components/pages/MainPage';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from './src/constants/Colors';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MainNavigator from './src/components/organisms/MainNavigator';
 
 export default function App() {
   return (
@@ -12,9 +13,11 @@ export default function App() {
         backgroundColor={"transparent"}
         translucent />
       <SafeAreaProvider>
-        <SafeAreaView edges={['bottom']} style={styles.container}>
-          <MainPage />
-        </SafeAreaView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaView edges={['bottom']} style={styles.container}>
+            <MainNavigator />
+          </SafeAreaView>
+        </GestureHandlerRootView>
       </SafeAreaProvider>
     </>
   );
