@@ -23,7 +23,7 @@ const BottomTabBar: React.FC<TabBarProps> = ({ tabs }) => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background,
-          borderTopWidth: 3,
+          borderTopWidth: 2,
           borderColor: colors.primary,
           elevation: 0,
           height: 83,

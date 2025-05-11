@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: 'absolute',
-    bottom: 83 + 8,
-    right: 8,
+    bottom: 83 + 16,
+    right: 16,
   },
 });
 
