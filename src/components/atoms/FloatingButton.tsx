@@ -13,7 +13,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onPress, style }) => {
     <TouchableOpacity 
       style={[styles.container, style]}
       onPress={onPress}
-      activeOpacity={0.8}
     >
       
       <SvgIcon

@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Icons from '../../../assets/images/index';
 import SvgIcon from '../atoms/SvgIcon';
@@ -21,11 +22,12 @@ const BottomTabBar: React.FC<TabBarProps> = ({ tabs }) => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#FFFFFF',
-          borderTopWidth: 0,
+          backgroundColor: colors.background,
+          borderTopWidth: 3,
+          borderColor: colors.primary,
           elevation: 0,
-          height: 80,
-          paddingBottom: 16,
+          height: 83,
+          paddingVertical: 16
         },
       }}
     >
@@ -36,13 +38,16 @@ const BottomTabBar: React.FC<TabBarProps> = ({ tabs }) => {
           component={tab.component}
           options={{
             tabBarIcon: ({ focused }) => (
-              <SvgIcon
-                name={tab.icon}
-                width={32}
-                height={32}
-                color={colors.primary}
-              />
-            ),
+              <View style={{ marginTop: 16 }}>
+                <SvgIcon
+                  name={tab.icon}
+                  width={32}
+                  height={32}
+                  color={focused ? colors.primary : colors.secondary}
+                  strokeWidth={focused ? 3 : 2}
+                />
+              </View>
+          ),
             tabBarLabel: () => null,
           }}
         />
