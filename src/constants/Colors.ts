@@ -7,6 +7,7 @@ interface ColorPalette {
   textBlack: string;
 
   delete: string;
+  edit: string;
 }
 
 export const colors: ColorPalette = {
@@ -17,5 +18,6 @@ export const colors: ColorPalette = {
   textWhite: '#F5EEDD',
   textBlack: '#06202B',
 
-  delete: '#E55050'
+  delete: '#E55050',
+  edit: '#FFF085',
 } as const;

@@ -5,13 +5,14 @@ import Reanimated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import {
+  Pressable,
   ScrollView,
 } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import * as Haptics from "expo-haptics";
 import { TodoItem } from "../molecules/TodoItem";
-import { Text } from "../atoms/Text";
 import { colors } from "../../constants/Colors";
+import SvgIcon from "../atoms/SvgIcon";
 
 interface TodoItem {
   id: string;
@@ -34,6 +35,26 @@ const triggerHaptic = async () => {
   }
 };
 
+function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>)
+{
+  const styleAnimation = useAnimatedStyle(() => {
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 50);
+
+    return {
+      transform: [{ translateX: drag.value - width }],
+      width: width
+    }
+  });
+
+  return (
+    <Reanimated.View style={[styleAnimation, styles.leftActionContainer]}>
+      <Pressable style={styles.leftAction}>
+        <SvgIcon name="Delete" width={32} height={32} color={colors.textWhite} />
+      </Pressable>
+    </Reanimated.View>
+  );
+}
+
 function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
   const styleAnimation = useAnimatedStyle(() => {
 
@@ -47,9 +68,9 @@ function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
 
   return (
     <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
-      <View style={styles.rightAction}>
-        <Text>{'삭제'}</Text>
-      </View>
+      <Pressable style={styles.rightAction}>
+        <SvgIcon name="TaskEdit" width={32} height={32} color={colors.textWhite} />
+      </Pressable>
     </Reanimated.View>
   );
 }
@@ -66,6 +87,8 @@ export const TodoList: React.FC<TodoListProps> = ({
           key={item.id}
           rightThreshold={40}
           renderRightActions={RightAction}
+          leftThreshold={40}
+          renderLeftActions={LeftAction}
           overshootFriction={6}
         >
           <TodoItem
@@ -88,7 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginVertical: 8,
-    backgroundColor: colors.delete,
+    backgroundColor: colors.edit,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
   },
@@ -97,4 +120,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
   },
+  leftActionContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 8,
+    backgroundColor: colors.delete,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  leftAction: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  }
 });
