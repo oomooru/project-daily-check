@@ -40,10 +40,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         >
           {text}
         </Text>
-
-        <Pressable onPress={onDelete}>
-          <Text style={styles.deleteText}>×</Text>
-        </Pressable>
       </View>
 
       <TagBox tags={tags} />

@@ -35,10 +35,10 @@ const triggerHaptic = async () => {
   }
 };
 
-function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>)
+function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>, onPress: () => void)
 {
   const styleAnimation = useAnimatedStyle(() => {
-    const width = Math.max(Math.min(Math.abs(drag.value), 150), 50);
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
     return {
       transform: [{ translateX: drag.value - width }],
@@ -48,7 +48,7 @@ function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>)
 
   return (
     <Reanimated.View style={[styleAnimation, styles.leftActionContainer]}>
-      <Pressable style={styles.leftAction}>
+      <Pressable style={styles.leftAction} onPress={onPress}>
         <SvgIcon name="Delete" width={32} height={32} color={colors.textWhite} />
       </Pressable>
     </Reanimated.View>
@@ -58,7 +58,7 @@ function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>)
 function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
   const styleAnimation = useAnimatedStyle(() => {
 
-    const width = Math.max(Math.min(Math.abs(drag.value), 150), 50);
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
     return {
       transform: [{ translateX: drag.value + width }],
@@ -69,7 +69,7 @@ function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
   return (
     <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
       <Pressable style={styles.rightAction}>
-        <SvgIcon name="TaskEdit" width={32} height={32} color={colors.textWhite} />
+        <SvgIcon name="TaskEdit" width={32} height={32} color={colors.textBlack} />
       </Pressable>
     </Reanimated.View>
   );
@@ -88,7 +88,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           rightThreshold={40}
           renderRightActions={RightAction}
           leftThreshold={40}
-          renderLeftActions={LeftAction}
+          renderLeftActions={(prog, drag) => (LeftAction(prog, drag, () => onDelete(item.id)))}
           overshootFriction={6}
         >
           <TodoItem
