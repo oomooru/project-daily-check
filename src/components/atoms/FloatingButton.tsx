@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, Pressable } from 'react-native';
 import SvgIcon from './SvgIcon';
 import { colors } from '../../constants/Colors';
 
@@ -10,7 +10,7 @@ interface FloatingButtonProps {
 
 const FloatingButton: React.FC<FloatingButtonProps> = ({ onPress, style }) => {
   return (
-    <TouchableOpacity 
+    <Pressable 
       style={[styles.container, style]}
       onPress={onPress}
     >
@@ -22,7 +22,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onPress, style }) => {
         color={colors.textBlack}
       />
         
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

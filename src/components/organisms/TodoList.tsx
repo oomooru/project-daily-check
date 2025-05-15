@@ -3,11 +3,8 @@ import { StyleSheet, View } from "react-native";
 import Reanimated, {
   SharedValue,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import {
-  Pressable,
-  ScrollView,
-} from "react-native-gesture-handler";
+} from "react-native-reanimated";
+import { Pressable, ScrollView } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import * as Haptics from "expo-haptics";
 import { TodoItem } from "../molecules/TodoItem";
@@ -35,21 +32,29 @@ const triggerHaptic = async () => {
   }
 };
 
-function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>, onPress: () => void)
-{
+function LeftAction(
+  prog: SharedValue<number>,
+  drag: SharedValue<number>,
+  onPress: () => void
+) {
   const styleAnimation = useAnimatedStyle(() => {
     const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
     return {
       transform: [{ translateX: drag.value - width }],
-      width: width
-    }
+      width: width,
+    };
   });
 
   return (
     <Reanimated.View style={[styleAnimation, styles.leftActionContainer]}>
       <Pressable style={styles.leftAction} onPress={onPress}>
-        <SvgIcon name="Delete" width={32} height={32} color={colors.textWhite} />
+        <SvgIcon
+          name="Delete"
+          width={32}
+          height={32}
+          color={colors.textWhite}
+        />
       </Pressable>
     </Reanimated.View>
   );
@@ -57,19 +62,23 @@ function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>, onPres
 
 function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
   const styleAnimation = useAnimatedStyle(() => {
-
     const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
     return {
       transform: [{ translateX: drag.value + width }],
-      width: width
+      width: width,
     };
   });
 
   return (
     <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
       <Pressable style={styles.rightAction}>
-        <SvgIcon name="TaskEdit" width={32} height={32} color={colors.textBlack} />
+        <SvgIcon
+          name="TaskEdit"
+          width={32}
+          height={32}
+          color={colors.textBlack}
+        />
       </Pressable>
     </Reanimated.View>
   );
@@ -81,14 +90,16 @@ export const TodoList: React.FC<TodoListProps> = ({
   onDelete,
 }) => {
   return (
-    <ScrollView>
+    <ScrollView style={{paddingVertical: 8}}>
       {todoItems.map((item) => (
         <Swipeable
           key={item.id}
           rightThreshold={40}
           renderRightActions={RightAction}
           leftThreshold={40}
-          renderLeftActions={(prog, drag) => (LeftAction(prog, drag, () => onDelete(item.id)))}
+          renderLeftActions={(prog, drag) =>
+            LeftAction(prog, drag, () => onDelete(item.id))
+          }
           overshootFriction={6}
         >
           <TodoItem
@@ -106,32 +117,37 @@ export const TodoList: React.FC<TodoListProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 8,
+    backgroundColor: colors.delete,
+  },
   rightActionContainer: {
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "center",
     marginVertical: 8,
     backgroundColor: colors.edit,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
   },
   rightAction: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
   leftActionContainer: {
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "center",
     marginVertical: 8,
     backgroundColor: colors.delete,
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
   },
   leftAction: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-  }
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabBar from '../molecules/BottomTabBar';
-import TabBarWrapper from '../molecules/TabBarWrapper';
 import * as Icons from '../../../assets/images/index';
 
 import { MainPage } from '../pages/MainPage';
@@ -28,18 +27,9 @@ const MainNavigator = () => {
     },
   ];
 
-  const handleAddTodo = () => {
-    // TODO 추가 로직
-    console.log('Add new TODO');
-  };
-
   return (
     <NavigationContainer>
-      <TabBarWrapper
-        onFloatingButtonPress={handleAddTodo}
-      >
-        <BottomTabBar tabs={tabs} />
-      </TabBarWrapper>
+      <BottomTabBar tabs={tabs} />
     </NavigationContainer>
   );
 };
