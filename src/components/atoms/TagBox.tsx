@@ -51,6 +51,7 @@ export const TagBox: React.FC<TagBoxProps> = ({ tags }) => {
   }, [tagBoxWidth]);
 
   const prevTagsRef = useRef(tags);
+  
   useEffect(() => {
     if (tags.some((tag, i) => tag !== prevTagsRef.current[i])) {
       itemsRef.current = tags.map((tag) => ({ tagText: tag }));
