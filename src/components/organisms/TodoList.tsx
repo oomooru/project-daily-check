@@ -1,21 +1,18 @@
 import React from "react";
-import { FlatList } from "react-native";
-import { TodoItem } from "../molecules/TodoItem";
-import Animated, {
-  useSharedValue,
+import { StyleSheet, View } from "react-native";
+import Reanimated, {
+  SharedValue,
   useAnimatedStyle,
-  withSpring,
-  runOnJS,
-  LinearTransition,
-  SlideInRight,
-  FadeOut,
-  Easing,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
 import {
-  Gesture,
-  GestureDetector,
+  Pressable,
+  ScrollView,
 } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import * as Haptics from "expo-haptics";
+import { TodoItem } from "../molecules/TodoItem";
+import { colors } from "../../constants/Colors";
+import SvgIcon from "../atoms/SvgIcon";
 
 interface TodoItem {
   id: string;
@@ -38,57 +35,45 @@ const triggerHaptic = async () => {
   }
 };
 
-const SwipeableItem = ({
-  item,
-  onSwipeComplete,
-  onDelete,
-}: {
-  item: TodoItem;
-  onSwipeComplete: () => void;
-  onDelete: () => void;
-}) => {
-  const translateX = useSharedValue(0);
-  const MAX_SWIPE = 50;
-  const COMPLETE_THRESHOLD = 50;
+function LeftAction(prog: SharedValue<number>, drag: SharedValue<number>, onPress: () => void)
+{
+  const styleAnimation = useAnimatedStyle(() => {
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
-  const gesture = Gesture.Pan()
-    .onUpdate((e) => {
-      if (e.translationX > 0) {
-        translateX.value = Math.min(e.translationX, MAX_SWIPE);
-      }
-    })
-    .onEnd((e) => {
-      if (e.translationX > COMPLETE_THRESHOLD) {
-        runOnJS(triggerHaptic)();
-
-        translateX.value = withSpring(MAX_SWIPE, { duration: 200 }, () => {
-          runOnJS(onSwipeComplete)();
-
-          translateX.value = withSpring(0, { duration: 300 });
-        });
-      } else {
-        translateX.value = withSpring(0);
-      }
-    });
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
+    return {
+      transform: [{ translateX: drag.value - width }],
+      width: width
+    }
+  });
 
   return (
-    <GestureDetector gesture={gesture}>
-      <Animated.View style={animatedStyle}>
-        <TodoItem
-          key={`todoitem-${item.id}`}
-          text={item.text}
-          completed={item.completed}
-          tags={["ReactNative", "TypeScript", "ExpoCLI", "개발", "Todo"]}
-          onDelete={onDelete}
-        />
-      </Animated.View>
-    </GestureDetector>
+    <Reanimated.View style={[styleAnimation, styles.leftActionContainer]}>
+      <Pressable style={styles.leftAction} onPress={onPress}>
+        <SvgIcon name="Delete" width={32} height={32} color={colors.textWhite} />
+      </Pressable>
+    </Reanimated.View>
   );
-};
+}
+
+function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
+  const styleAnimation = useAnimatedStyle(() => {
+
+    const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
+
+    return {
+      transform: [{ translateX: drag.value + width }],
+      width: width
+    };
+  });
+
+  return (
+    <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
+      <Pressable style={styles.rightAction}>
+        <SvgIcon name="TaskEdit" width={32} height={32} color={colors.textBlack} />
+      </Pressable>
+    </Reanimated.View>
+  );
+}
 
 export const TodoList: React.FC<TodoListProps> = ({
   todoItems,
@@ -96,22 +81,57 @@ export const TodoList: React.FC<TodoListProps> = ({
   onDelete,
 }) => {
   return (
-    <Animated.FlatList
-      data={todoItems}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <Animated.View
-          layout={LinearTransition.duration(200)}
-          entering={SlideInRight.easing(Easing.back(1)).duration(200)}
-          exiting={FadeOut}
+    <ScrollView>
+      {todoItems.map((item) => (
+        <Swipeable
+          key={item.id}
+          rightThreshold={40}
+          renderRightActions={RightAction}
+          leftThreshold={40}
+          renderLeftActions={(prog, drag) => (LeftAction(prog, drag, () => onDelete(item.id)))}
+          overshootFriction={6}
         >
-          <SwipeableItem
-            item={item}
-            onSwipeComplete={() => onToggle(item.id)}
+          <TodoItem
+            key={`todoitem-${item.id}`}
+            text={item.text}
+            completed={item.completed}
+            tags={item.tags}
+            onToggle={() => onToggle(item.id)}
             onDelete={() => onDelete(item.id)}
           />
-        </Animated.View>
-      )}
-    />
+        </Swipeable>
+      ))}
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  rightActionContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 8,
+    backgroundColor: colors.edit,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
+  rightAction: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  leftActionContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 8,
+    backgroundColor: colors.delete,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  leftAction: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  }
+});

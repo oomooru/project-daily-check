@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { Text } from "../atoms/Text";
 import { colors } from "../../constants/Colors";
 import SvgIcon from "../atoms/SvgIcon";
@@ -9,6 +9,7 @@ interface TodoItemProps {
   text: string;
   completed: boolean;
   tags: string[];
+  onToggle: () => void;
   onDelete: () => void;
 }
 
@@ -16,10 +17,13 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   text,
   completed,
   tags,
+  onToggle,
   onDelete,
 }) => {
   return (
-    <View style={[styles.container, completed ? styles.completed : {}]}>
+    <Pressable 
+      style={[styles.container, completed ? styles.completed : {}]}
+      onPress={onToggle}>
       <View style={styles.textBox}>
         <View style={{ paddingRight: 8 }}>
           <SvgIcon
@@ -36,14 +40,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         >
           {text}
         </Text>
-
-        <TouchableOpacity onPress={onDelete}>
-          <Text style={styles.deleteText}>×</Text>
-        </TouchableOpacity>
       </View>
 
       <TagBox tags={tags} />
-    </View>
+    </Pressable>
   );
 };
 
