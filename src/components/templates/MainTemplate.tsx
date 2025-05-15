@@ -35,10 +35,12 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     padding: 16,
+    height: 72,
     borderBottomWidth: 1,
     borderBottomColor: colors.secondary
   },
   content: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.background
   }
 });

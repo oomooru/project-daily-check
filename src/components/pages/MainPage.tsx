@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { MainTemplate } from '../templates/MainTemplate';
-import { InputWithButton } from '../molecules/InputWithButton';
 import { TodoList } from '../organisms/TodoList';
+import { TodoComposer } from '../organisms/TodoComposer';
 import SvgIcon from '../atoms/SvgIcon';
 
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<{ id: string; text: string; tags: string[]; completed: boolean }>>([]);
 
-  const addTodo = (text: string) => {
-    setTodos([...todos, { id: Date.now().toString(), text, tags: ['태그A', '태그B', '태그C'], completed: false }]);
+  const addTodo = (text: string, tags: string[]) => {
+    setTodos([...todos, { id: Date.now().toString(), text, tags, completed: false }]);
   };
 
   const toggleTodo = (id: string) => {
@@ -30,16 +30,13 @@ export const MainPage = () => {
       }
       content={
         <>
-          <InputWithButton
-            placeholder="Add a new task"
-            buttonText="Add"
-            onSubmit={addTodo}
-          />
           <TodoList
             todoItems={todos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
           />
+
+          <TodoComposer onPost={addTodo} />
         </>
       }
     />
