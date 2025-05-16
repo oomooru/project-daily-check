@@ -90,7 +90,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   onDelete,
 }) => {
   return (
-    <ScrollView style={{paddingVertical: 8}}>
+    <ScrollView style={{ paddingVertical: 8 }}>
       {todoItems.map((item) => (
         <Swipeable
           key={item.id}

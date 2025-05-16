@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
 import FloatingButton from "../atoms/FloatingButton";
+import SvgIcon from "../atoms/SvgIcon";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const MAIN_HEADER_HEIGHT = 72;
@@ -39,28 +40,27 @@ const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
   </View>
 );
 
-export const TodoComposer: React.FC<TodoComposerProps> = ({
-  onPost
-}) => {
+export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [todoText, setTodoText] = useState('');
-  const [tagText, setTagText] = useState('');
+  const [todoText, setTodoText] = useState("");
+  const [tagText, setTagText] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const insets = useSafeAreaInsets();
   const todoInputRef = useRef<TextInput>(null);
   const tagInputRef = useRef<TextInput>(null);
 
-  const modalHeight = SCREEN_HEIGHT - insets.top - MAIN_HEADER_HEIGHT - insets.bottom;
+  const modalHeight =
+    SCREEN_HEIGHT - insets.top - MAIN_HEADER_HEIGHT - insets.bottom;
 
   useEffect(() => {
-    if (tagText.includes(',')) {
-      const newTag = tagText.replace(',', '');
+    if (tagText.includes(",")) {
+      const newTag = tagText.replace(",", "");
       const newTags = tags;
       newTags.push(newTag);
-      
+
       setTags(newTags);
-      setTagText('');
+      setTagText("");
 
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
@@ -77,8 +77,8 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     if (!isVisible) {
       setTimeout(() => todoInputRef.current?.focus(), 100);
     } else {
-      setTodoText('');
-      setTagText('');
+      setTodoText("");
+      setTagText("");
       setTags([]);
     }
   };
@@ -98,8 +98,8 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     const newTags = [...tags];
     newTags.push(tag);
     setTags(newTags);
-    setTagText('');
-  }
+    setTagText("");
+  };
 
   const removeTag = (index: number) => {
     const newTags = [...tags];
@@ -130,7 +130,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                 <Text style={styles.cancelButtonText}>{"취소"}</Text>
               </Pressable>
 
-              <Text style={styles.modalTitle}>{"할 일 추가"}</Text>
+              <Text style={styles.modalTitle}>{"일과 추가"}</Text>
 
               <Pressable
                 onPress={handlePost}
@@ -147,9 +147,36 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               style={styles.inputContainer}
-              keyboardVerticalOffset={insets.top + MAIN_HEADER_HEIGHT}
+              keyboardVerticalOffset={8}
             >
               <ScrollView style={styles.textScrollContainer}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignContent: "center",
+                    justifyContent: "flex-start",
+                    paddingVertical: 8,
+                  }}
+                >
+                  <SvgIcon
+                    name="CheckSquare"
+                    width={24}
+                    height={24}
+                    color={colors.textWhite}
+                    strokeWidth={3}
+                  />
+                  <Text
+                    variant="title"
+                    style={{
+                      color: colors.textWhite,
+                      fontSize: 18,
+                      marginLeft: 6,
+                    }}
+                  >
+                    {"일과"}
+                  </Text>
+                </View>
+
                 <TextInput
                   ref={todoInputRef}
                   style={styles.todoInput}
@@ -160,31 +187,79 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                   onChangeText={setTodoText}
                 />
 
-                <TextInput
-                  ref={tagInputRef}
-                  style={styles.tagInput}
-                  placeholder="태그 예: 운동,유산소,매일매일"
-                  placeholderTextColor={colors.secondary}
-                  value={tagText}
-                  onChangeText={setTagText}
-                  onSubmitEditing={() => addTag(tagText)}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  submitBehavior="submit"
-                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignContent: "center",
+                    justifyContent: "flex-start",
+                    paddingVertical: 8,
+                  }}
+                >
+                  <SvgIcon
+                    name="Hashtag"
+                    width={24}
+                    height={24}
+                    color={colors.textWhite}
+                    strokeWidth={3}
+                  />
+                  <Text
+                    variant="title"
+                    style={{
+                      color: colors.textWhite,
+                      fontSize: 18,
+                      marginLeft: 6,
+                      marginTop: 2,
+                    }}
+                  >
+                    {"태그"}
+                  </Text>
+                </View>
+
+                <View style={{ flexDirection: "row" }}>
+                  <TextInput
+                    ref={tagInputRef}
+                    style={styles.tagInput}
+                    placeholder="',' 나 '엔터'로 여러 개 입력할 수 있어요."
+                    placeholderTextColor={colors.primary}
+                    value={tagText}
+                    onChangeText={setTagText}
+                    onSubmitEditing={() => addTag(tagText)}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    submitBehavior="submit"
+                    multiline={false}
+                  />
+                  <Pressable
+                    style={{
+                      backgroundColor: colors.primary,
+                      borderRadius: 8,
+                      padding: 16,
+                      marginBottom: 8,
+                    }}
+                    onPress={() => addTag(tagText)}
+                  >
+                    <SvgIcon
+                      name="Plus"
+                      width="20"
+                      height="20"
+                      color={colors.textBlack}
+                    />
+                  </Pressable>
+                </View>
+
+                <View style={{ width: "100%", height: 2, backgroundColor: colors.primary, marginBottom: 8 }} />
 
                 {tags.length > 0 && (
                   <View style={styles.tagsRow}>
                     {tags.map((tag, index) => (
-                      <Tag 
-                        key={`${tag}-${index}`} 
-                        text={tag} 
-                        onRemove={() => removeTag(index)} 
+                      <Tag
+                        key={`${tag}-${index}`}
+                        text={tag}
+                        onRemove={() => removeTag(index)}
                       />
                     ))}
                   </View>
                 )}
-
               </ScrollView>
             </KeyboardAvoidingView>
           </Animated.View>
@@ -223,7 +298,8 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     color: colors.primary,
-    fontSize: 16,
+    fontSize: 18,
+    marginRight: 8,
   },
   modalTitle: {
     fontSize: 18,
@@ -247,9 +323,9 @@ const styles = StyleSheet.create({
   },
   todoInput: {
     flex: 1,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlignVertical: 'top',
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlignVertical: "top",
     color: colors.textWhite,
     backgroundColor: colors.secondary,
     padding: 16,
@@ -262,37 +338,45 @@ const styles = StyleSheet.create({
     right: 16,
   },
   tagContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
     backgroundColor: colors.secondary,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   tagInput: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: "bold",
     textAlignVertical: "top",
     color: colors.textWhite,
+    backgroundColor: colors.secondary,
+    padding: 16,
+    borderRadius: 8,
     marginBottom: 8,
+    marginRight: 8,
   },
   tagText: {
     color: colors.textWhite,
     fontSize: 16,
   },
   tagsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    gap: 8
   },
   removeTag: {
     marginLeft: 6,
+    alignSelf: "flex-end",
   },
   removeTagText: {
     color: colors.primary,
     fontSize: 16,
   },
   textScrollContainer: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
