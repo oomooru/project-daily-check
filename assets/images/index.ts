@@ -6,3 +6,4 @@ export {default as Edit} from './edit.svg';
 export {default as Plus} from './plus.svg';
 export {default as TaskEdit} from './taskEdit.svg';
 export {default as Delete} from './delete.svg';
+export {default as Hashtag} from './hashtag.svg';
