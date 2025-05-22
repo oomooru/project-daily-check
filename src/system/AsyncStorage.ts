@@ -17,7 +17,8 @@ export const saveTodoData = async (todos: TodoData[]): Promise<void> => {
 export const loadTodoData = async (): Promise<TodoData[]> => {
   try {
     const json = await AsyncStorage.getItem(STORAGE_KEY.TODO_DATA);
-    return json ? JSON.parse(json) : [];
+    const parsed: TodoData[] = json ? JSON.parse(json) : [];
+    return parsed;
   } catch (e) {
     console.error('Failed to load todo data', e);
     return [];
