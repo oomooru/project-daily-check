@@ -10,15 +10,13 @@ interface TodoItemProps {
   completed: boolean;
   tags: string[];
   onToggle: () => void;
-  onDelete: () => void;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
   text,
   completed,
   tags,
-  onToggle,
-  onDelete,
+  onToggle
 }) => {
   return (
     <Pressable 
