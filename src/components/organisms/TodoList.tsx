@@ -10,18 +10,13 @@ import * as Haptics from "expo-haptics";
 import { TodoItem } from "../molecules/TodoItem";
 import { colors } from "../../constants/Colors";
 import SvgIcon from "../atoms/SvgIcon";
-
-interface TodoItem {
-  id: string;
-  text: string;
-  tags: string[];
-  completed: boolean;
-}
+import { TodoData } from "../../interface/TodoInterface";
 
 interface TodoListProps {
-  todoItems: TodoItem[];
+  todoItems: TodoData[];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
+  onEdit: (editItem: TodoData) => void;
 }
 
 const triggerHaptic = async () => {
@@ -60,7 +55,11 @@ function LeftAction(
   );
 }
 
-function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
+function RightAction(
+  prog: SharedValue<number>, 
+  drag: SharedValue<number>,
+  onPress: () => void 
+) {
   const styleAnimation = useAnimatedStyle(() => {
     const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
 
@@ -72,7 +71,7 @@ function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
 
   return (
     <Reanimated.View style={[styleAnimation, styles.rightActionContainer]}>
-      <Pressable style={styles.rightAction}>
+      <Pressable style={styles.rightAction} onPress={onPress}>
         <SvgIcon
           name="TaskEdit"
           width={32}
@@ -88,6 +87,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   todoItems,
   onToggle,
   onDelete,
+  onEdit
 }) => {
   return (
     <ScrollView style={{ paddingVertical: 8 }}>
@@ -95,7 +95,9 @@ export const TodoList: React.FC<TodoListProps> = ({
         <Swipeable
           key={item.id}
           rightThreshold={40}
-          renderRightActions={RightAction}
+          renderRightActions={(prog, drag) =>
+            RightAction(prog, drag, () => onEdit(item))
+          }
           leftThreshold={40}
           renderLeftActions={(prog, drag) =>
             LeftAction(prog, drag, () => onDelete(item.id))
@@ -108,7 +110,6 @@ export const TodoList: React.FC<TodoListProps> = ({
             completed={item.completed}
             tags={item.tags}
             onToggle={() => onToggle(item.id)}
-            onDelete={() => onDelete(item.id)}
           />
         </Swipeable>
       ))}

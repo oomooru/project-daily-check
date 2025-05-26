@@ -21,12 +21,17 @@ import { colors } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
 import FloatingButton from "../atoms/FloatingButton";
 import SvgIcon from "../atoms/SvgIcon";
+import { TodoData } from "../../interface/TodoInterface";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const MAIN_HEADER_HEIGHT = 72;
 
 interface TodoComposerProps {
   onPost: (text: string, tags: string[]) => void;
+  isVisible: boolean;
+  onClose: () => void;
+  mode: 'Add' | 'Edit';
+  initialData : TodoData | null
 }
 
 const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
@@ -40,8 +45,14 @@ const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
   </View>
 );
 
-export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
-  const [isVisible, setIsVisible] = useState(false);
+export const TodoComposer: React.FC<TodoComposerProps> = ({ 
+  onPost,
+  isVisible,
+  onClose,
+  mode,
+  initialData
+}) => {
+  
   const [todoText, setTodoText] = useState("");
   const [tagText, setTagText] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -52,6 +63,20 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
 
   const modalHeight =
     SCREEN_HEIGHT - insets.top - MAIN_HEADER_HEIGHT - insets.bottom;
+
+  const modalTitle = mode === 'Edit' ? "일과 편집" : "일과 추가";
+  const postButtonText = mode === 'Edit' ? "수정" : "등록";
+
+  useEffect(() => {
+    if (isVisible && mode === 'Edit' && initialData) {
+      setTodoText(initialData.text);
+      setTags(initialData.tags);
+    } else {
+      setTodoText("");
+      setTags([]);
+    }
+    setTagText("");
+  }, [isVisible, mode, initialData]);
 
   useEffect(() => {
     if (tagText.includes(",")) {
@@ -66,21 +91,28 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
     }
   }, [tagText]);
 
-  const toggleModal = () => {
+  useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsVisible(!isVisible);
-    translateY.value = withTiming(isVisible ? modalHeight : 0, {
-      duration: 300,
-      easing: Easing.out(Easing.ease),
-    });
 
-    if (!isVisible) {
+    if (isVisible) {
+      translateY.value = withTiming(0, {
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+      });
       setTimeout(() => todoInputRef.current?.focus(), 100);
     } else {
+      translateY.value = withTiming(modalHeight, {
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+      });
       setTodoText("");
       setTagText("");
       setTags([]);
     }
+  }, [isVisible]);
+
+  const toggleModal = () => {
+    onClose();
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -130,7 +162,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
                 <Text style={styles.cancelButtonText}>{"취소"}</Text>
               </Pressable>
 
-              <Text style={styles.modalTitle}>{"일과 추가"}</Text>
+              <Text style={styles.modalTitle}>{modalTitle}</Text>
 
               <Pressable
                 onPress={handlePost}
@@ -140,7 +172,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({ onPost }) => {
                 ]}
                 disabled={todoText.length === 0}
               >
-                <Text style={styles.postButtonText}>{"등록"}</Text>
+                <Text style={styles.postButtonText}>{postButtonText}</Text>
               </Pressable>
             </View>
 
