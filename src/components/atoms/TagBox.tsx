@@ -11,84 +11,83 @@ type TagItem = { tagText: string; width?: number };
 
 export const TagBox: React.FC<TagBoxProps> = ({ tags }) => {
   const [tagBoxWidth, setTagBoxWidth] = useState(0);
-  const itemsRef = useRef<TagItem[]>(tags.map((tagText) => ({ tagText })));
+  const itemsRef = useRef<TagItem[]>(tags.map(tagText => ({ tagText })));
   const [flattenedItems, setFlattenedItems] = useState<TagItem[]>([]);
+  const tagsVersionRef = useRef(0); // 태그 변경을 추적하기 위한 버전 관리
 
   const handleTagBoxLayout = useCallback((e: LayoutChangeEvent) => {
     setTagBoxWidth(e.nativeEvent.layout.width);
   }, []);
 
-  const handleTextLayout = useCallback(
-    (index: number, e: LayoutChangeEvent) => {
-      itemsRef.current[index].width = Math.ceil(
-        e.nativeEvent.layout.width + 12
-      );
-
-      if (itemsRef.current.every((item) => item.width)) {
-        optimizeLayout();
-      }
-    },
-    []
-  );
+  const handleTextLayout = useCallback((index: number, e: LayoutChangeEvent) => {
+    const width = Math.ceil(e.nativeEvent.layout.width + 12);
+    
+    if (itemsRef.current[index]?.width !== width) {
+      itemsRef.current[index].width = width;
+      optimizeLayout();
+    }
+  }, [tagBoxWidth]);
 
   const optimizeLayout = useCallback(() => {
-    if (!tagBoxWidth) return;
+    if (!tagBoxWidth || itemsRef.current.length === 0) return;
 
-    const sortedItems = [...itemsRef.current].sort(
+    const validItems = itemsRef.current.filter(item => 
+      item.tagText && tags.includes(item.tagText)
+    );
+
+    const sortedItems = [...validItems].sort(
       (a, b) => (b.width || 0) - (a.width || 0)
     );
 
-    const widths = sortedItems.map((item) => item.width!);
+    const widths = sortedItems.map(item => item.width!);
     const combinations = findAllClosestCombinations(widths, tagBoxWidth);
-    const tagItemCombinations = combinations.map((comb) =>
-      comb.map(
-        (width) => itemsRef.current.find((item) => item.width === width)!
-      )
+    const tagItemCombinations = combinations.map(comb =>
+      comb.map(width => validItems.find(item => item.width === width)!)
     );
 
     const flattened = flattenCombinations(sortedItems, tagItemCombinations);
     setFlattenedItems(flattened);
-  }, [tagBoxWidth]);
+  }, [tagBoxWidth, tags]);
 
-  const prevTagsRef = useRef(tags);
-  
   useEffect(() => {
-    if (tags.some((tag, i) => tag !== prevTagsRef.current[i])) {
-      itemsRef.current = tags.map((tag) => ({ tagText: tag }));
+    const prevTags = itemsRef.current.map(item => item.tagText);
+    
+    if (tags.length !== prevTags.length || 
+        tags.some((tag, i) => tag !== prevTags[i])) {
+
+      itemsRef.current = tags.map(tagText => ({ tagText }));
+      tagsVersionRef.current += 1;
+      setFlattenedItems([]);
     }
-    prevTagsRef.current = tags;
   }, [tags]);
 
   useEffect(() => {
     optimizeLayout();
-  }, [tagBoxWidth]);
+  }, [tags, tagBoxWidth, optimizeLayout]);
 
   return (
-    <View style={styles.tagBox} onLayout={(e) => handleTagBoxLayout(e)}>
-
+    <View style={styles.tagBox} onLayout={handleTagBoxLayout}>
+      {/* Initial Rendering */}
       {flattenedItems.length === 0 &&
         tags.map((tag, index) => (
           <View
-            key={index}
+            key={`${tagsVersionRef.current}-${tag}-${index}`}
             style={styles.tag}
             onLayout={(e) => handleTextLayout(index, e)}
           >
-            <Text
-              variant="body"
-              style={{ textAlign: "center", color: colors.textWhite }}
-            >
+            <Text style={{ textAlign: "center", color: colors.textWhite }}>
               {"#" + tag}
             </Text>
           </View>
         ))}
 
-      {flattenedItems.length !== 0 &&
+      {flattenedItems.length > 0 &&
         flattenedItems.map((item, index) => (
-          <View key={`item-${index}`} style={styles.tag}>
-            <Text
-              variant="body"
-              style={{ textAlign: "center", color: colors.textWhite }}
-            >
+          <View 
+            key={`${tagsVersionRef.current}-${item.tagText}-${index}`}
+            style={styles.tag}
+          >
+            <Text style={{ textAlign: "center", color: colors.textWhite }}>
               {"#" + item.tagText}
             </Text>
           </View>

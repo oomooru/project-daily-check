@@ -9,6 +9,15 @@ import { loadTodoData, saveTodoData } from '../../system/AsyncStorage';
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<TodoData>>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>();
+  const [composerState, setComposerState] = useState<{
+    isVisible: boolean;
+    mode: 'Add' | 'Edit';
+    editingItem: TodoData | null;
+  }>({
+    isVisible: false,
+    mode: 'Add',
+    editingItem: null
+  });
 
   const addTodo = (text: string, tags: string[]) => {
     setTodos([...todos, { id: Date.now().toString(), text, tags, completed: false }]);
@@ -24,6 +33,48 @@ export const MainPage = () => {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter(todo => todo.id !== id));4
+  };
+
+  const updateTodo = (updatedItem: TodoData) => {
+    setTodos(todos.map(todo => 
+      todo.id === updatedItem.id ? updatedItem : todo
+    ));
+  };
+
+  const openAddMode = () => {
+    setComposerState({
+      isVisible: true,
+      mode: 'Add',
+      editingItem: null
+    });
+  }
+
+  const openEditMode = (item: TodoData) => {
+    setComposerState({
+      isVisible: true,
+      mode: 'Edit',
+      editingItem: item
+    });
+  }
+
+  const closeComposer = () => {
+    setComposerState(prev => ({
+      ...prev,
+      isVisible: false
+    }));
+  }
+
+  const handlePost = (text: string, tags: string[]) => {
+    if (composerState.mode === 'Add') {
+      addTodo(text, tags);
+    } else if (composerState.mode === 'Edit' && composerState.editingItem) {
+      updateTodo({
+        ...composerState.editingItem,
+        text,
+        tags,
+      });
+    }
+    closeComposer();
   };
 
   useEffect(() => {
@@ -53,9 +104,17 @@ export const MainPage = () => {
             todoItems={todos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
+            onEdit={openEditMode}
           />
 
-          <TodoComposer onPost={addTodo} />
+          <TodoComposer 
+            onPost={handlePost}
+            onOpenAddMode={openAddMode}
+            isVisible={composerState.isVisible}
+            onClose={closeComposer}
+            mode={composerState.mode}
+            initialData={composerState.editingItem}
+          />
         </>
       }
     />
