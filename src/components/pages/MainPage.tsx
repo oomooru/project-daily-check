@@ -109,6 +109,7 @@ export const MainPage = () => {
 
           <TodoComposer 
             onPost={handlePost}
+            onOpenAddMode={openAddMode}
             isVisible={composerState.isVisible}
             onClose={closeComposer}
             mode={composerState.mode}

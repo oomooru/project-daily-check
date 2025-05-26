@@ -28,6 +28,7 @@ const MAIN_HEADER_HEIGHT = 72;
 
 interface TodoComposerProps {
   onPost: (text: string, tags: string[]) => void;
+  onOpenAddMode: () => void;
   isVisible: boolean;
   onClose: () => void;
   mode: 'Add' | 'Edit';
@@ -47,6 +48,7 @@ const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
 
 export const TodoComposer: React.FC<TodoComposerProps> = ({ 
   onPost,
+  onOpenAddMode,
   isVisible,
   onClose,
   mode,
@@ -141,7 +143,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
   return (
     <View style={styles.container}>
-      <FloatingButton onPress={toggleModal} style={styles.floatingButton} />
+      <FloatingButton onPress={onOpenAddMode} style={styles.floatingButton} />
 
       {isVisible && (
         <View
