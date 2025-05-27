@@ -4,7 +4,7 @@ import { TodoList } from '../organisms/TodoList';
 import { TodoComposer } from '../organisms/TodoComposer';
 import SvgIcon from '../atoms/SvgIcon';
 import { TodoData } from '../../interface/TodoInterface';
-import { loadTodoData, saveTodoData } from '../../system/AsyncStorage';
+import TodoManager from '../../manager/TodoManager';
 
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<TodoData>>([]);
@@ -79,14 +79,14 @@ export const MainPage = () => {
 
   useEffect(() => {
     if (isInitialized) {
-      saveTodoData(todos);
+      TodoManager.saveTodoData(TodoManager.getToday(), todos);
     }
   }, [todos]);
 
   useEffect(() => {
     const fetchTodoData = async () => {
-      const loadedTodoData = await loadTodoData();
-      setTodos(loadedTodoData);
+      await TodoManager.initialize();
+      setTodos(TodoManager.getTodosByDate(TodoManager.getToday()));
       setIsInitialized(true);
     }
   

@@ -4,6 +4,7 @@ import { loadTodoDateData, saveTodoDateData } from '../system/AsyncStorage';
 class TodoManager {
   private static instance: TodoManager;
   private todoDateData: TodoDateData[] = [];
+  private today = new Date().toISOString().split('T')[0];
 
   private constructor() {}
 
@@ -22,14 +23,29 @@ class TodoManager {
     return [...this.todoDateData];
   }
 
+  public getToday(): string {
+    return this.today;
+  }
+
   public getTodosByDate(date: string): TodoData[] {
     let todoDateData = this.todoDateData.find(todo => todo.date === date);
+
+    if (!todoDateData && this.todoDateData.length > 0) {
+      todoDateData = this.todoDateData[this.todoDateData.length - 1];
+      todoDateData.date = date;
+      todoDateData.todos.map(todo => todo.completed = false);
+    }
+
     return todoDateData ? todoDateData.todos : [];
+  }
+
+  public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {
+    await this.saveTodoDateData({date: date, todos: todos});
   }
 
   public async saveTodoDateData(todoDateData: TodoDateData): Promise<void> {
     const existingIndex = this.todoDateData.findIndex(t => t.date === todoDateData.date);
-    
+
     if (existingIndex >= 0) {
       this.todoDateData[existingIndex] = todoDateData;
     } else {
