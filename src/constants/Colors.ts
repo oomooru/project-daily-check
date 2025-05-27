@@ -8,6 +8,9 @@ interface ColorPalette {
 
   delete: string;
   edit: string;
+
+  sunday: string;
+  saturday: string;
 }
 
 export const colors: ColorPalette = {
@@ -20,4 +23,7 @@ export const colors: ColorPalette = {
 
   delete: '#E55050',
   edit: '#FFF085',
+
+  sunday: '#E55050',
+  saturday: '#00CAFF',
 } as const;
