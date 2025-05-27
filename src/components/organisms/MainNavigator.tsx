@@ -4,6 +4,7 @@ import BottomTabBar from '../molecules/BottomTabBar';
 import * as Icons from '../../../assets/images/index';
 
 import { MainPage } from '../pages/MainPage';
+import { CalendarPage } from '../pages/CalendarPage';
 
 const MainNavigator = () => {
   const tabs = [
@@ -14,16 +15,16 @@ const MainNavigator = () => {
       label: '홈',
     },
     {
-      name: 'Edit',
-      component: MainPage,
-      icon: "Edit" as keyof typeof Icons,
-      label: '수정',
-    },
-    {
       name: 'Calendar',
-      component: MainPage,
+      component: CalendarPage,
       icon: "Calendar" as keyof typeof Icons,
       label: '달력',
+    },
+    {
+      name: 'Summary',
+      component: MainPage,
+      icon: "Edit" as keyof typeof Icons,
+      label: '요약',
     },
   ];
 
