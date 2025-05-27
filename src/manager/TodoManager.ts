@@ -31,7 +31,8 @@ class TodoManager {
     let todoDateData = this.todoDateData.find(todo => todo.date === date);
 
     if (!todoDateData && this.todoDateData.length > 0) {
-      todoDateData = this.todoDateData[this.todoDateData.length - 1];
+      let lastTodoDateData = this.todoDateData[this.todoDateData.length - 1];
+      todoDateData = {...lastTodoDateData, todos: lastTodoDateData.todos.map(todo => ({ ...todo }))};
       todoDateData.date = date;
       todoDateData.todos.map(todo => todo.completed = false);
     }
