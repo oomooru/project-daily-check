@@ -1,16 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import SvgIcon from '../atoms/SvgIcon';
 import { CalendarTemplate } from '../templates/CalendarTemplate';
 import { colors } from '../../constants/Colors';
-import { format } from 'date-fns';
-
+import TodoManager from '../../manager/TodoManager';
+import { MarkedDates } from 'react-native-calendars/src/types';
 
 export const CalendarPage = () => {
 
-  const today = new Date();
-  const todayString = format(today, 'yyyy-MM-dd');
   const [selectedDay, setSelectedDay] = useState('');
+  const [today, setToday] = useState('');
+  const [recordedDays, setRecoredDays] = useState<string[]>([]);
+  const [markedSelectedDates, setMarkedSelectedDates] = useState<MarkedDates>({});
+
+  let markedDateList: string[] = [];
+  let markedDates: MarkedDates = {};
+
+  useEffect(() => {
+    setToday(TodoManager.getToday());
+    setRecoredDays(TodoManager.getAllSavedDate());
+  }, []);
+
+  useEffect(() => {
+    recordedDays.forEach((date) => {markedDateList.push(date)});
+    markedDateList.forEach((date) => {markedDates[date] = {marked: true, dotColor: colors.primary}});
+    setMarkedSelectedDates({
+      ...markedDates,
+      [today]: {
+        selected: true,
+        marked: markedDates[today]?.marked,
+        selectedColor: colors.primary,
+        dotColor: colors.background
+      },
+      [selectedDay]: {
+        selected: true,
+        marked: markedDates[selectedDay]?.marked,
+        disableTouchEvent: true,
+        selectedColor: colors.secondary,
+        dotColor: colors.background
+      }
+    });
+  }, [selectedDay, today, recordedDays]);
 
   return (
     <CalendarTemplate
@@ -22,17 +52,14 @@ export const CalendarPage = () => {
           <Calendar
             onDayPress={
               day => {
-                if (todayString === day.dateString) {
+                if (today === day.dateString) {
                   setSelectedDay('');
                 } else{
                   setSelectedDay(day.dateString);
                 }
               }
             }
-            markedDates={{
-              [todayString]: {selected: true, selectedColor: colors.primary},
-              [selectedDay]: {selected: true, disableTouchEvent: true, selectedColor: colors.secondary}
-            }}
+            markedDates={markedSelectedDates}
             theme={{
               'stylesheet.calendar.header': {
                 dayTextAtIndex0: {

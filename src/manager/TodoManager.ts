@@ -42,6 +42,10 @@ class TodoManager {
     return todoDateData ? todoDateData.todos : [];
   }
 
+  public getAllSavedDate() {
+    return this.todoDateData.map(todo => todo.date);
+  }
+
   public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {
     await this.saveTodoDateData({date: date, todos: todos});
   }
