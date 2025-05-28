@@ -35,6 +35,8 @@ class TodoManager {
       todoDateData = {...lastTodoDateData, todos: lastTodoDateData.todos.map(todo => ({ ...todo }))};
       todoDateData.date = date;
       todoDateData.todos.map(todo => todo.completed = false);
+
+      this.todoDateData.push(todoDateData);
     }
 
     return todoDateData ? todoDateData.todos : [];
