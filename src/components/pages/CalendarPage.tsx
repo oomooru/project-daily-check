@@ -14,7 +14,6 @@ import { GaugeBar } from '../atoms/GaugeBar';
 export const CalendarPage = () => {
 
   const [selectedDay, setSelectedDay] = useState('');
-  const [today, setToday] = useState('');
   const [recordedDays, setRecoredDays] = useState<string[]>([]);
   const [markedSelectedDates, setMarkedSelectedDates] = useState<MarkedDates>({});
   const [progressPercentage, setProgressPercentage] = useState(0);
@@ -24,27 +23,28 @@ export const CalendarPage = () => {
   let markedDates: MarkedDates = {};
 
   useEffect(() => {
-    setToday(TodoManager.getToday());
     setRecoredDays(TodoManager.getAllSavedDate());
-    setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : today));
-    setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : today));
   }, []);
 
   useFocusEffect(useCallback(() => {
-    setToday(TodoManager.getToday());
-    setRecoredDays(TodoManager.getAllSavedDate());
-    setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : today));
-    setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : today));
+    setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : TodoManager.getToday()));
+    setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : TodoManager.getToday()));
   }, []));
 
   useEffect(() => {
     recordedDays.forEach((date) => {markedDateList.push(date)});
-    markedDateList.forEach((date) => {markedDates[date] = {marked: true, dotColor: colors.primary}});
+    markedDateList.forEach((date) => {
+      markedDates[date] = {
+        marked: true, 
+        dotColor: TodoManager.isCompleteDate(date) ? colors.primary : colors.secondary
+      }
+    });
+
     setMarkedSelectedDates({
       ...markedDates,
-      [today]: {
+      [TodoManager.getToday()]: {
         selected: true,
-        marked: markedDates[today]?.marked,
+        marked: markedDates[TodoManager.getToday()]?.marked,
         selectedColor: colors.primary,
         dotColor: colors.background
       },
@@ -57,15 +57,15 @@ export const CalendarPage = () => {
       }
     });
 
-    setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : today));
-    setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : today));
-  }, [selectedDay, today, recordedDays]);
+    setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : TodoManager.getToday()));
+    setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : TodoManager.getToday()));
+  }, [recordedDays, selectedDay, TodoManager.getToday()]);
 
   function getRelativeTime(
     targetDateStr: string
   ): string {
-    return targetDateStr === today ? 
-      "Today" : formatDistance(targetDateStr, today, {addSuffix: true, includeSeconds: false});
+    return targetDateStr === TodoManager.getToday() ? 
+      "Today" : formatDistance(targetDateStr, TodoManager.getToday(), {addSuffix: true, includeSeconds: false});
   }
 
   return (
@@ -80,7 +80,7 @@ export const CalendarPage = () => {
               style={styles.calandar}
               onDayPress={
                 day => {
-                  if (today === day.dateString) {
+                  if (TodoManager.getToday() === day.dateString) {
                     setSelectedDay('');
                   } else{
                     setSelectedDay(day.dateString);
@@ -120,8 +120,8 @@ export const CalendarPage = () => {
               <GaugeBar progress={progressPercentage} />
 
               <View style={styles.descriptionTitle}>
-                <Text variant='title' style={styles.selectedDateText}>{selectedDay ? selectedDay : today}</Text>
-                <Text variant='body' style={styles.relativeDateText}>{getRelativeTime(selectedDay ? selectedDay : today)}</Text>
+                <Text variant='title' style={styles.selectedDateText}>{selectedDay ? selectedDay : TodoManager.getToday()}</Text>
+                <Text variant='body' style={styles.relativeDateText}>{getRelativeTime(selectedDay ? selectedDay : TodoManager.getToday())}</Text>
               </View>
 
             </View>

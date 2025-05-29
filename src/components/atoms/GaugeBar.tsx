@@ -15,11 +15,13 @@ export const GaugeBar = ({ progress }: { progress: number }) => {
   const [gaugeBarWidth, setGaugeBarWidth] = useState(0);
 
   useEffect(() => {
+    if (gaugeBarWidth === 0) return;
+
     widthAnim.value = withTiming(Math.max(progress, (GAUGE_BAR_HEIGHT / gaugeBarWidth * 100)), {
       duration: 300,
       easing: Easing.out(Easing.exp)
     });
-  }, [progress]);
+  }, [progress, gaugeBarWidth]);
 
   const handleGaugeBarLayout = useCallback((e: LayoutChangeEvent) => {
     setGaugeBarWidth(Math.ceil(e.nativeEvent.layout.width));
@@ -33,7 +35,7 @@ export const GaugeBar = ({ progress }: { progress: number }) => {
     <View style={styles.container}>
       {gaugeBarWidth === 0 && (
         <View 
-          style={[styles.gaugeBarBackground, {height: 0}]} 
+          style={styles.gaugeBarCalc} 
           onLayout={(e) => handleGaugeBarLayout(e)} 
         />
       )}
@@ -59,6 +61,10 @@ const styles = StyleSheet.create({
     height: GAUGE_BAR_HEIGHT,
     backgroundColor: colors.secondary,
     borderRadius: GAUGE_BAR_HEIGHT / 2
+  },
+  gaugeBarCalc: {
+    width: '100%',
+    height: 0
   },
   gaugeBar: {
     height: GAUGE_BAR_HEIGHT,
