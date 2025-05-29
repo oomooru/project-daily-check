@@ -46,6 +46,39 @@ class TodoManager {
     return this.todoDateData.map(todo => todo.date);
   }
 
+  public getAllCompletedDates() {
+    const dateMap: Record<string, {total: number; completed: number}> = {};
+
+    this.todoDateData.forEach(todoDate => {
+      if (!dateMap[todoDate.date]) {
+        dateMap[todoDate.date] = {total: 0, completed: 0};
+      }
+      
+      dateMap[todoDate.date].total = todoDate.todos.length;
+      dateMap[todoDate.date].completed = todoDate.todos.filter(todo => todo.completed).length;
+    });
+  }
+
+  public getDailyProgressPercentage(date: string) {
+    const dailyTodo = this.todoDateData.find(todo => todo.date === date);
+
+    if (!dailyTodo) return 0;
+
+    const completedCount = dailyTodo.todos.filter(todo => todo.completed).length;
+    return (completedCount / dailyTodo.todos.length) * 100;
+  }
+
+  public getDailyProgressText(date: string) {
+    const dailyTodo = this.todoDateData.find(todo => todo.date === date);
+
+    if (!dailyTodo) return '';
+
+    const completedCount = dailyTodo.todos.filter(todo => todo.completed).length;
+    return completedCount === dailyTodo.todos.length
+      ? 'PERFECT!'
+      : `${completedCount}/${dailyTodo.todos.length}`;
+  }
+
   public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {
     await this.saveTodoDateData({date: date, todos: todos});
   }
