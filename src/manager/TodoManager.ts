@@ -4,8 +4,7 @@ import { loadTodoDateData, saveTodoDateData } from '../system/AsyncStorage';
 class TodoManager {
   private static instance: TodoManager;
   private todoDateData: TodoDateData[] = [];
-  //private today = new Date().toISOString().split('T')[0];
-  private today = '2025-05-28';
+  private today = new Date().toISOString().split('T')[0];
 
   private constructor() {}
 
