@@ -64,7 +64,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   const tagInputRef = useRef<TextInput>(null);
 
   const modalHeight =
-    SCREEN_HEIGHT - insets.top - MAIN_HEADER_HEIGHT - insets.bottom;
+    SCREEN_HEIGHT - insets.top;
 
   const modalTitle = mode === 'Edit' ? "일과 편집" : "일과 추가";
   const postButtonText = mode === 'Edit' ? "수정" : "등록";
@@ -305,7 +305,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: 0,
   },
   modalOverlay: {
     ...StyleSheet.absoluteFillObject,
