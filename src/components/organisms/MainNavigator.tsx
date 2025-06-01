@@ -5,6 +5,7 @@ import * as Icons from '../../../assets/images/index';
 
 import { MainPage } from '../pages/MainPage';
 import { CalendarPage } from '../pages/CalendarPage';
+import { SummaryPage } from '../pages/SummaryPage';
 
 const MainNavigator = () => {
   const tabs = [
@@ -22,7 +23,7 @@ const MainNavigator = () => {
     },
     {
       name: 'Summary',
-      component: MainPage,
+      component: SummaryPage,
       icon: "Edit" as keyof typeof Icons,
       label: '요약',
     },

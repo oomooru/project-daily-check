@@ -97,6 +97,34 @@ class TodoManager {
     return count;
   }
 
+  public getCompleteTagsChartData() {
+    const tagCounts: Record<string, {value: number, color: string}> = {};
+
+    this.todoDateData.forEach(todoDate => 
+      todoDate.todos.forEach(todo => {
+        if (todo.completed) {
+          todo.tags.forEach(tag => {
+            if (!tagCounts[tag]) {
+              tagCounts[tag] = {
+                value: 0,
+                color: ''
+              }
+            }
+            tagCounts[tag].value += 1;
+          }) 
+        }
+      })
+    );
+
+    return Object.entries(tagCounts)
+      .map(([label, data]) => ({
+        label,
+        value: data.value,
+        color: data.color
+      }))
+      .sort((a, b) => b.value - a.value);
+  }
+
   public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {
     await this.saveTodoDateData({date: date, todos: todos});
   }
