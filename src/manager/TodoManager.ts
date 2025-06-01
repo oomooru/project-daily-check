@@ -1,3 +1,4 @@
+import { addDays, format, parseISO } from 'date-fns';
 import { TodoData, TodoDateData } from '../interface/TodoInterface';
 import { loadTodoDateData, saveTodoDateData } from '../system/AsyncStorage';
 
@@ -63,7 +64,6 @@ class TodoManager {
     const dailyTodo = this.todoDateData.find(todo => todo.date === date);
 
     if (!dailyTodo) {
-      console.log(`Failed : ${date}`);
       return '';
     }
 
@@ -71,6 +71,30 @@ class TodoManager {
     return completedCount === dailyTodo.todos.length
       ? 'PERFECT!'
       : `${completedCount}/${dailyTodo.todos.length}`;
+  }
+
+  public getConsecutiveDays() {
+    const completedTodos = this.todoDateData.filter(todoData => todoData.todos.every(todo => todo.completed));
+
+    if (!completedTodos || completedTodos.length <= 1) return 0;
+
+    const completedTodoDates = completedTodos.map(todo => todo.date);
+    let currDate = parseISO(this.today);
+    let count = 1;
+
+    while (true) {
+      const prevDate = addDays(currDate, -1);
+      const prevDateStr = format(prevDate, 'yyyy-MM-dd');
+
+      if (completedTodoDates.includes(prevDateStr)) {
+        count++;
+        currDate = prevDate;
+      } else {
+        break;
+      }
+    }
+
+    return count;
   }
 
   public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {

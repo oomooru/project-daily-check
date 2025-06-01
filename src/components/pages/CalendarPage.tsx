@@ -18,6 +18,7 @@ export const CalendarPage = () => {
   const [markedSelectedDates, setMarkedSelectedDates] = useState<MarkedDates>({});
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [progressText, setProgressText] = useState('');
+  const [consecutiveCount, setConsecutiveCount] = useState(0);
 
   let markedDateList: string[] = [];
   let markedDates: MarkedDates = {};
@@ -29,6 +30,7 @@ export const CalendarPage = () => {
   useFocusEffect(useCallback(() => {
     setProgressPercentage(TodoManager.getDailyProgressPercentage(selectedDay ? selectedDay : TodoManager.getToday()));
     setProgressText(TodoManager.getDailyProgressText(selectedDay ? selectedDay : TodoManager.getToday()));
+    setConsecutiveCount(TodoManager.getConsecutiveDays());
   }, []));
 
   useEffect(() => {
@@ -114,6 +116,9 @@ export const CalendarPage = () => {
             <View style={styles.descriptionBox}>
 
               <View style={styles.progressTextBox}>
+                {consecutiveCount > 1 && !selectedDay && (
+                  <Text style={styles.consecutiveText}>{`${consecutiveCount}일 연속 달성!`}</Text>
+                )}
                 <Text style={styles.progressText}>{progressText !== '' ? progressText : '기록이 없습니다'}</Text>
               </View>
 
@@ -166,6 +171,13 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 36,
+    color: colors.primary
+  },
+  consecutiveTextBox: {
+    flex: 1,
+  },
+  consecutiveText: {
+    fontSize: 20,
     color: colors.primary
   }
 });
