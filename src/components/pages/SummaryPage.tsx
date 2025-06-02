@@ -11,8 +11,6 @@ import { Text } from "../atoms/Text";
 import { BarChartItem } from "../molecules/BarChartItem";
 
 export const SummaryPage = () => {
-  const [todos, setTodos] = useState<Array<TodoData>>([]);
-  const [isInitialized, setIsInitialized] = useState<boolean>();
   const [chartData, setChartData] = useState<Record<string, unknown>[]>([]);
   const [maxChartValue, setMaxChartValue] = useState<number>(0);
 
