@@ -24,7 +24,7 @@ const MainNavigator = () => {
     {
       name: 'Summary',
       component: SummaryPage,
-      icon: "Edit" as keyof typeof Icons,
+      icon: "Summary" as keyof typeof Icons,
       label: '요약',
     },
   ];
