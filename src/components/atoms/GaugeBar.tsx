@@ -10,7 +10,7 @@ import { colors } from '../../constants/Colors';
 
 const GAUGE_BAR_HEIGHT = 24;
 
-export const GaugeBar = ({ progress }: { progress: number }) => {
+export const GaugeBar = ({ progress, isBackgroundVisible = true }: { progress: number, isBackgroundVisible: boolean }) => {
   const widthAnim = useSharedValue(0);
   const [gaugeBarWidth, setGaugeBarWidth] = useState(0);
 
@@ -33,24 +33,29 @@ export const GaugeBar = ({ progress }: { progress: number }) => {
 
   return (
     <View style={styles.container}>
-      {gaugeBarWidth === 0 && (
-        <View 
-          style={styles.gaugeBarCalc} 
-          onLayout={(e) => handleGaugeBarLayout(e)} 
-        />
-      )}
-    
-      {gaugeBarWidth !== 0 && (
-        <View style={styles.gaugeBarBackground}>
-          <Animated.View style={[animatedStyle, styles.gaugeBar]} />
-        </View>
-      )}
+      <View style={styles.gaugeBarWrapper}>
+        {gaugeBarWidth === 0 && (
+          <View 
+            style={styles.gaugeBarCalc} 
+            onLayout={(e) => handleGaugeBarLayout(e)} 
+          />
+        )}
+      
+        {gaugeBarWidth !== 0 && (
+          <View style={[styles.gaugeBarBackground, {backgroundColor: isBackgroundVisible ? colors.secondary : ''}]}>
+            <Animated.View style={[animatedStyle, styles.gaugeBar]} />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  gaugeBarWrapper: {
     alignItems: 'flex-start',
     width: '100%',
     height: GAUGE_BAR_HEIGHT,
@@ -59,7 +64,6 @@ const styles = StyleSheet.create({
   gaugeBarBackground: {
     width: '100%',
     height: GAUGE_BAR_HEIGHT,
-    backgroundColor: colors.secondary,
     borderRadius: GAUGE_BAR_HEIGHT / 2
   },
   gaugeBarCalc: {
