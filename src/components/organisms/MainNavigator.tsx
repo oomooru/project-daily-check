@@ -6,6 +6,7 @@ import * as Icons from '../../../assets/images/index';
 import { MainPage } from '../pages/MainPage';
 import { CalendarPage } from '../pages/CalendarPage';
 import { SummaryPage } from '../pages/SummaryPage';
+import { ConfigPage } from '../pages/ConfigPage';
 
 const MainNavigator = () => {
   const tabs = [
@@ -26,6 +27,12 @@ const MainNavigator = () => {
       component: SummaryPage,
       icon: "Summary" as keyof typeof Icons,
       label: '요약',
+    },
+    {
+      name: 'Config',
+      component: ConfigPage,
+      icon: "Config" as keyof typeof Icons,
+      label: '설정',
     },
   ];
 
