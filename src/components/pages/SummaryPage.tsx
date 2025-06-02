@@ -73,7 +73,7 @@ export const SummaryPage = () => {
                 title="현재 연속 완료일"
                 content={
                   <>
-                    <Text style={styles.consecutiveDayText}>{`${TodoManager.getConsecutiveDays()}일 달성`}</Text>
+                    <Text style={styles.summaryCardContentText}>{`${TodoManager.getConsecutiveDays()}일 달성`}</Text>
                   </>
                 }
               />
@@ -82,6 +82,9 @@ export const SummaryPage = () => {
                 title="완료된 태그"
                 content={
                   <>
+                    {!chartData || chartData.length === 0 && (
+                      <Text style={styles.summaryCardContentText}>{'완료된 일과가 없습니다'}</Text>
+                    )}
                     {chartData?.map((data, index) => (
                       <BarChartItem
                         key={`summaryPage-listItem-${index}`}
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  consecutiveDayText: {
+  summaryCardContentText: {
     width: '100%',
     textAlign: 'center',
     color: colors.textWhite,
