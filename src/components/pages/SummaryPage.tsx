@@ -78,6 +78,15 @@ export const SummaryPage = () => {
                 }
               />
 
+              <SummaryCard 
+                title="일과 완료율"
+                content={
+                  <>
+                    <Text style={styles.summaryCardContentText}>{`${TodoManager.getAllCompletedTodosCount()} / ${TodoManager.getAllTodosCount()}`}</Text>
+                  </>
+                }
+              />
+
               <SummaryCard
                 title="완료된 태그"
                 content={

@@ -125,6 +125,14 @@ class TodoManager {
       .sort((a, b) => b.value - a.value);
   }
 
+  public getAllTodosCount() {
+    return this.todoDateData.reduce((sum, dateData) => sum + dateData.todos.length, 0);
+  }
+
+  public getAllCompletedTodosCount() {
+    return this.todoDateData.reduce((sum, dateData) => sum + dateData.todos.filter(todo => todo.completed).length, 0);
+  }
+
   public async saveTodoData(date: string, todos: TodoData[]): Promise<void> {
     await this.saveTodoDateData({date: date, todos: todos});
   }
