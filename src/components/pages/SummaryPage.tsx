@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { Pie, PolarChart } from 'victory-native';
 import { SummaryTemplate } from '../templates/SummaryTemplate';
 import { TodoComposer } from '../organisms/TodoComposer';
 import SvgIcon from '../atoms/SvgIcon';
@@ -9,13 +8,13 @@ import { TodoData } from '../../interface/TodoInterface';
 import TodoManager from '../../manager/TodoManager';
 import { colors, interpolateColor } from '../../constants/Colors';
 import { Text } from '../atoms/Text';
+import { BarChartItem } from '../molecules/BarChartItem';
 
 export const SummaryPage = () => {
   const [todos, setTodos] = useState<Array<TodoData>>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>();
   const [chartData, setChartData] = useState<Record<string, unknown>[]>([]);
-  const [firstRankText, setFirstRankText] = useState<string>();
-  const [secondRankText, setSecondRankText] = useState<string>();
+  const [maxChartValue, setMaxChartValue] = useState<number>(0);
 
   useFocusEffect(useCallback(() => {
     const datas = TodoManager.getCompleteTagsChartData();
@@ -24,15 +23,12 @@ export const SummaryPage = () => {
   }, []));
 
   useEffect(() => {
-    //getDataRankString();
-  }, [chartData])
+    if (!chartData || chartData.length === 0) return;
 
-  function getDataRankString() {
-    const firstValidData = chartData.filter((data): data is {value: number} => typeof data.value === 'number')
-    const firstValue = firstValidData.reduce((prev, current) => prev.value > current.value ? prev : current);
-    const firstRankString = chartData.filter((data) => data.value == firstValue).map((item) => `#${item.label as string}`);
-    setFirstRankText(firstRankString.join(' '));
-  }
+    setMaxChartValue(chartData.reduce((prev, current) => (
+      prev.value as number) > (current.value as number) ? prev : current
+    ).value as number);
+  }, [chartData])
 
   return (
     <SummaryTemplate
@@ -42,27 +38,27 @@ export const SummaryPage = () => {
       content={
         <>
           <View style={styles.container}>
-            <View style={styles.completeChartBox}>
-              <PolarChart
-                data={chartData}
-                labelKey={'label' as never}
-                valueKey={'value' as never}
-                colorKey={'color' as never}
-                canvasStyle={styles.completeChartCanvas}
-              >
-                <Pie.Chart 
-                  innerRadius={'75%'}
-                  startAngle={270}
-                  size={350}
-                />
-              </PolarChart>
+            <ScrollView style={styles.completeChartBox}>
 
-              <View style={styles.completeChartTextBox}>
-                {chartData.length > 0 && (<Text style={styles.completeChartText1st}>{`1st #${chartData[0].label as string}`}</Text>)}
-                {chartData.length > 1 && (<Text style={styles.completeChartText2nd}>{`2nd #${chartData[1].label as string}`}</Text>)}
-                {chartData.length > 2 && (<Text style={styles.completeChartText3rd}>{`3rd #${chartData[2].label as string}`}</Text>)}
+              <View style={styles.completeChartList} key={'completeChartList'}>
+
+                <View style={styles.completeChartTitleBox} key={'completeChartTitleBox'}>
+                  <Text style={styles.completeChartTitle} variant='title'>{'완료된 태그'}</Text>
+                </View>
+
+                <View style={styles.chartItemBox}>
+                  {chartData?.map((data, index) => (
+                    <BarChartItem 
+                      key={`summaryPage-listItem-${index}`}
+                      maxValue={maxChartValue} 
+                      targetValue={data.value as number}
+                      text={data.label as string}
+                    />
+                  ))}
+                </View>
               </View>
-            </View>
+
+            </ScrollView>
           </View>
         </>
       }
@@ -79,25 +75,31 @@ const styles = StyleSheet.create({
   },
   completeChartBox: {
     height: '100%',
-    justifyContent: 'center'
   },
-  completeChartTextBox: {
-    position: 'absolute',
-    alignSelf: 'center',
+  completeChartList: {
     alignItems: 'center',
-    justifyContent: 'center'
+    margin: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.secondary,
   },
-  completeChartText1st: {
-    color: colors.textWhite,
-    fontSize: 22,
-    fontWeight: 'bold'
+  completeChartTitleBox: {
+    alignItems: 'center',
+    width: '100%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    backgroundColor: colors.secondary,
+    marginBottom: 16    
   },
-  completeChartText2nd: {
+  completeChartTitle: {
+    flex: 1,
+    fontSize: 20,
     color: colors.textWhite,
-    fontSize: 18,
+    paddingVertical: 8
   },
-  completeChartText3rd: {
-    color: colors.textWhite,
-    fontSize: 14,
+  chartItemBox: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 16
   }
 });
