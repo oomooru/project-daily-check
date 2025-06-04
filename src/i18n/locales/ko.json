@@ -1,0 +1,8 @@
+{
+  "locale": "ko",
+  "displayLanguage": "표시 언어",
+  "selectedLanguage": "한국어",
+  "todoDelete": "데이터 삭제",
+  "deleteConfirmation": "데이터를 삭제하면 복구할 수 없습니다.\n정말로 삭제하시겠습니까?",
+  "cancel": "취소"
+}

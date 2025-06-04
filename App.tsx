@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, StatusBar } from 'react-native';
+import { LanguageProvider } from './src/context/LanguageContext';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from './src/constants/Colors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,13 +13,15 @@ export default function App() {
         barStyle={"light-content"}
         backgroundColor={"transparent"}
         translucent />
-      <SafeAreaProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <SafeAreaView edges={['bottom']} style={styles.container}>
-            <MainNavigator />
-          </SafeAreaView>
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
+      <LanguageProvider>
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <SafeAreaView edges={['bottom']} style={styles.container}>
+              <MainNavigator />
+            </SafeAreaView>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </LanguageProvider>
     </>
   );
 };

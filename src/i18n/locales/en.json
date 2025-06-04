@@ -1,0 +1,8 @@
+{
+  "locale": "en",
+  "displayLanguage": "Display Language",
+  "selectedLanguage": "English",
+  "todoDelete": "Delete all data",
+  "deleteConfirmation": "Deleted data cannot be recovered.\nAre you sure you want to delete?",
+  "cancel": "Cancel"
+}

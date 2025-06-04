@@ -1,0 +1,8 @@
+{
+  "locale": "ja",
+  "displayLanguage": "表示言語",
+  "selectedLanguage": "日本語",
+  "todoDelete": "データ削除",
+  "deleteConfirmation": "データを削除すると元に戻せません。\n本当に削除しますか？",
+  "cancel": "キャンセル"
+}

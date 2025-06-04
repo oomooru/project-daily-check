@@ -8,3 +8,4 @@ export {default as TaskEdit} from './taskEdit.svg';
 export {default as Delete} from './delete.svg';
 export {default as Hashtag} from './hashtag.svg';
 export {default as Summary} from './summary.svg';
+export {default as Config} from './config.svg';
