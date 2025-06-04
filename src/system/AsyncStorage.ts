@@ -3,7 +3,8 @@ import { TodoData, TodoDateData } from "../interface/TodoInterface";
 
 const STORAGE_KEY = {
   TODO_DATA: '@todoData',
-  TODO_DATE_DATA: '@todoDateData'
+  TODO_DATE_DATA: '@todoDateData',
+  LANGUAGE: '@language'
 }
 
 export const saveTodoData = async (todos: TodoData[]): Promise<void> => {
@@ -43,5 +44,25 @@ export const loadTodoDateData = async (): Promise<TodoDateData[]> => {
   } catch (e) {
     console.error('Failed to load todo date data', e);
     return [];
+  }
+}
+
+export const saveLanguage = async (locale: string): Promise<void> => {
+  try {
+    const json = JSON.stringify(locale);
+    await AsyncStorage.setItem(STORAGE_KEY.LANGUAGE, json);
+  } catch (e) {
+    console.error('Failed to save language', e);
+  }
+}
+
+export const loadLanguage = async (): Promise<string> => {
+  try {
+  const json = await AsyncStorage.getItem(STORAGE_KEY.LANGUAGE);
+  const parsed: string = json ? JSON.parse(json) : [];
+  return parsed;
+  } catch (e) {
+    console.error('Failed to load language', e);
+    return '';
   }
 }
