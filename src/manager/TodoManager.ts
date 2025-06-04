@@ -160,6 +160,12 @@ class TodoManager {
     await this.saveTodoDateData(todoDateData);
   }
 
+  public async deleteAllTodoDateData(): Promise<void> {
+    this.todoDateData = [];
+
+    await this.persistData();
+  }
+
   private async persistData(): Promise<void> {
     await saveTodoDateData(this.todoDateData);
   }

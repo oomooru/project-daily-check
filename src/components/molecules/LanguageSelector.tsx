@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: "80%",
-    backgroundColor: colors.primary,
+    backgroundColor: colors.background,
+    borderColor: colors.primary,
+    borderWidth: 2,
     borderRadius: 8,
     padding: 16,
     zIndex: 1,
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    color: colors.textBlack,
+    color: colors.textWhite,
   },
   modalBackground: {
     ...StyleSheet.absoluteFillObject,
