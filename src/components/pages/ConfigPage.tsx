@@ -5,10 +5,9 @@ import { SummaryTemplate } from "../templates/SummaryTemplate";
 import SvgIcon from "../atoms/SvgIcon";
 import { colors } from "../../constants/Colors";
 import { Card } from "../molecules/Card";
-import { LanguageSelector } from "../molecules/LanguageSelector";
+import { LanguageSelector } from "../organisms/LanguageSelector";
 import { useLanguage } from "../../context/LanguageContext";
-import { Text } from "../atoms/Text";
-import { TodoDeleteButton } from "../molecules/TodoDeleteButton";
+import { TodoDeleteButton } from "../organisms/TodoDeleteButton";
 
 export const ConfigPage = () => {
   const { t } = useLanguage();

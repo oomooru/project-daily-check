@@ -3,12 +3,11 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Modal,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { colors } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
 import { useLanguage } from "../../context/LanguageContext";
+import { PopupModal } from "../molecules/PopupModal";
 
 const languages = [
   { code: "en", name: "English" },
@@ -39,18 +38,12 @@ export const LanguageSelector = () => {
         <Text style={styles.buttonText}>{t("selectedLanguage")}</Text>
       </TouchableOpacity>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={hideModal}
-      >
-        <TouchableWithoutFeedback onPress={hideModal}>
-          <View style={[styles.modalBackground, {backgroundColor: 'rgba(0, 0, 0, 0.4)'}]} />
-        </TouchableWithoutFeedback>
-
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+      <PopupModal
+        modalVisible={modalVisible}
+        onClose={hideModal}
+        title={t('displayLanguage')}
+        content={
+          <>
             {languages.map((lang) => (
               <TouchableOpacity
                 key={lang.code}
@@ -60,17 +53,17 @@ export const LanguageSelector = () => {
                 <Text style={styles.languageText}>{lang.name}</Text>
               </TouchableOpacity>
             ))}
-          </View>
-        </View>
-      </Modal>
+          </>
+        }
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    marginBottom: 16
+    width: "100%",
+    marginBottom: 16,
   },
   button: {
     padding: 16,
@@ -83,36 +76,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    width: "80%",
-    backgroundColor: colors.background,
-    borderColor: colors.primary,
-    borderWidth: 2,
-    borderRadius: 8,
-    padding: 16,
-    zIndex: 1,
-    shadowColor: colors.background,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
-  },
   languageItem: {
     paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.secondary,
+    backgroundColor: colors.primary,
+    borderRadius: 8
   },
   languageText: {
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    color: colors.textWhite,
-  },
-  modalBackground: {
-    ...StyleSheet.absoluteFillObject,
+    color: colors.textBlack,
   },
 });
