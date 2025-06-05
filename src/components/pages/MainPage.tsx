@@ -33,7 +33,7 @@ export const MainPage = () => {
   };
 
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id));4
+    setTodos(todos.filter(todo => todo.id !== id));
   };
 
   const updateTodo = (updatedItem: TodoData) => {
