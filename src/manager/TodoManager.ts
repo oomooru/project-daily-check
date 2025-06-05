@@ -63,7 +63,7 @@ class TodoManager {
   public getDailyProgressText(date: string) {
     const dailyTodo = this.todoDateData.find(todo => todo.date === date);
 
-    if (!dailyTodo) {
+    if (!dailyTodo || dailyTodo.todos.length === 0) {
       return '';
     }
 
