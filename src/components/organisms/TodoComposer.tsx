@@ -91,11 +91,8 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   useEffect(() => {
     if (tagText.includes(",")) {
       const newTag = tagText.replace(",", "");
-      const newTags = tags;
-      newTags.push(newTag);
-
-      setTags(newTags);
-      setTagText("");
+      
+      addTag(newTag);
 
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
@@ -143,9 +140,11 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   };
 
   const addTag = (tag: string) => {
-    const newTags = [...tags];
-    newTags.push(tag);
-    setTags(newTags);
+    if (!tag || !tag.trim() || /^,+$/.test(tag)) {
+      return;
+    }
+
+    setTags([...tags, tag]);
     setTagText("");
   };
 
@@ -186,9 +185,9 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                 onPress={handlePost}
                 style={[
                   styles.postButton,
-                  { opacity: todoText.length > 0 ? 1 : 0.5 },
+                  { opacity: todoText.length > 0 && tags.length > 0 ? 1 : 0.5 },
                 ]}
-                disabled={todoText.length === 0}
+                disabled={todoText.length === 0 || tags.length === 0}
               >
                 <Text style={styles.postButtonText}>{postButtonText}</Text>
               </Pressable>
