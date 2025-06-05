@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from "@react-navigation/native";
 import { MainTemplate } from '../templates/MainTemplate';
 import { TodoList } from '../organisms/TodoList';
 import { TodoComposer } from '../organisms/TodoComposer';
@@ -93,6 +94,12 @@ export const MainPage = () => {
   
     fetchTodoData();
   }, []);
+  
+  useFocusEffect(
+    useCallback(() => {
+      setTodos(TodoManager.getTodosByDate(TodoManager.getToday()));
+    }, [])
+  );
 
   return (
     <MainTemplate
