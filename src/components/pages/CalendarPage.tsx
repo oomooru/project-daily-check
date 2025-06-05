@@ -122,9 +122,11 @@ export const CalendarPage = () => {
                 <Text style={styles.progressText}>{progressText !== '' ? progressText : '기록이 없습니다'}</Text>
               </View>
 
-              <View style={{width: '100%', height: 24, marginBottom: 16}}>
-                <GaugeBar progress={progressPercentage} isBackgroundVisible={true} />
-              </View>
+              {progressText && (
+                <View style={{width: '100%', height: 24, marginBottom: 16}}>
+                  <GaugeBar progress={progressPercentage} isBackgroundVisible={true} />
+                </View>
+              )}
 
               <View style={styles.descriptionTitle}>
                 <Text variant='title' style={styles.selectedDateText}>{selectedDay ? selectedDay : TodoManager.getToday()}</Text>
