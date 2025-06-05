@@ -18,6 +18,7 @@ export const MainPage = () => {
     mode: 'Add',
     editingItem: null
   });
+  const [isSwiping, setIsSwiping] = useState(false);
 
   const addTodo = (text: string, tags: string[]) => {
     setTodos([...todos, { id: Date.now().toString(), text, tags, completed: false }]);
@@ -105,6 +106,8 @@ export const MainPage = () => {
             onToggle={toggleTodo}
             onDelete={deleteTodo}
             onEdit={openEditMode}
+            onSwipeStart={() => setIsSwiping(true)}
+            onSwipeEnd={() => setIsSwiping(false)}
           />
 
           <TodoComposer 
@@ -114,6 +117,7 @@ export const MainPage = () => {
             onClose={closeComposer}
             mode={composerState.mode}
             initialData={composerState.editingItem}
+            isSwiping={isSwiping}
           />
         </>
       }

@@ -1,9 +1,6 @@
 import React, { useRef } from "react";
-import { StyleSheet, View } from "react-native";
-import Reanimated, {
-  SharedValue,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import { StyleSheet } from "react-native";
+import Reanimated, { SharedValue, useAnimatedStyle } from "react-native-reanimated";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import Swipeable, { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable";
 import * as Haptics from "expo-haptics";
@@ -17,6 +14,8 @@ interface TodoListProps {
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: (editItem: TodoData) => void;
+  onSwipeStart: () => void;
+  onSwipeEnd: () => void;
 }
 
 const triggerHaptic = async () => {
@@ -87,15 +86,19 @@ export const TodoList: React.FC<TodoListProps> = ({
   todoItems,
   onToggle,
   onDelete,
-  onEdit
+  onEdit,
+  onSwipeStart,
+  onSwipeEnd
 }) => {
 
   const swipeableRefs = useRef<{[key: string]: SwipeableMethods | null}>({});
 
   const handleSwipeableOpen = (id: string) => {
+    onSwipeStart();
+
     Object.entries(swipeableRefs.current).forEach(([itemId, ref]) => {
       if (itemId !== id && ref) {
-        ref.close();
+        ref.reset();
       }
     });
   };
@@ -107,6 +110,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           key={item.id}
           ref={(ref) => {swipeableRefs.current[item.id] = ref}}
           onSwipeableWillOpen={() => handleSwipeableOpen(item.id)}
+          onSwipeableWillClose={onSwipeEnd}
           rightThreshold={40}
           renderRightActions={(prog, drag) =>
             RightAction(prog, drag, () => onEdit(item))

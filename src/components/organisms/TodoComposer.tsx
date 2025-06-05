@@ -32,7 +32,8 @@ interface TodoComposerProps {
   isVisible: boolean;
   onClose: () => void;
   mode: 'Add' | 'Edit';
-  initialData : TodoData | null
+  initialData : TodoData | null;
+  isSwiping: boolean;
 }
 
 const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
@@ -52,7 +53,8 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   isVisible,
   onClose,
   mode,
-  initialData
+  initialData,
+  isSwiping
 }) => {
   
   const [todoText, setTodoText] = useState("");
@@ -63,8 +65,14 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   const todoInputRef = useRef<TextInput>(null);
   const tagInputRef = useRef<TextInput>(null);
 
-  const modalHeight =
-    SCREEN_HEIGHT - insets.top;
+  const modalHeight = SCREEN_HEIGHT - insets.top;
+
+  const floatingButtonOpacity = useSharedValue(1);
+  const floatingButtonStyle = useAnimatedStyle(() => {
+    return {
+      opacity: floatingButtonOpacity.value,
+    };
+  });
 
   const modalTitle = mode === 'Edit' ? "일과 편집" : "일과 추가";
   const postButtonText = mode === 'Edit' ? "수정" : "등록";
@@ -113,6 +121,12 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    floatingButtonOpacity.value = withTiming(isSwiping ? 0 : 1, {
+      duration: 150,
+    });
+  }, [isSwiping])
+
   const toggleModal = () => {
     onClose();
   };
@@ -143,7 +157,9 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
   return (
     <View style={styles.container}>
-      <FloatingButton onPress={onOpenAddMode} style={styles.floatingButton} />
+      <Animated.View style={[styles.floatingButton, floatingButtonStyle]}>
+        <FloatingButton onPress={onOpenAddMode} />
+      </Animated.View>
 
       {isVisible && (
         <View
@@ -368,8 +384,8 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: "absolute",
-    bottom: 16,
-    right: 16,
+    bottom: 64,
+    right: 64,
   },
   tagContainer: {
     flexDirection: "row",
