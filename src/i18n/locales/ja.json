@@ -4,5 +4,6 @@
   "selectedLanguage": "日本語",
   "todoDelete": "データ削除",
   "deleteConfirmation": "データを削除すると元に戻せません。\n本当に削除しますか？",
-  "cancel": "キャンセル"
+  "cancel": "キャンセル",
+  "resetTime": "日付変更時間"
 }
