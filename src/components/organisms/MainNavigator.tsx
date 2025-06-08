@@ -1,5 +1,4 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import BottomTabBar from '../molecules/BottomTabBar';
 import * as Icons from '../../../assets/images/index';
 
@@ -7,6 +6,9 @@ import { MainPage } from '../pages/MainPage';
 import { CalendarPage } from '../pages/CalendarPage';
 import { SummaryPage } from '../pages/SummaryPage';
 import { ConfigPage } from '../pages/ConfigPage';
+import { setupNotificationHandler } from '../../notification/handler';
+import { setupNotificationChannels } from '../../notification/channels';
+import { useNotificationListener } from '../../notification/useNotificationListener';
 
 const MainNavigator = () => {
   const tabs = [
@@ -36,10 +38,24 @@ const MainNavigator = () => {
     },
   ];
 
+  useEffect(() => {
+      const initializeNotifications = async () => {
+        try {
+          setupNotificationHandler();
+          await setupNotificationChannels();
+        } catch (error) {
+          console.error('알림 초기화 실패:', error);
+        }
+      };
+  
+      initializeNotifications();
+    }, []);
+  
+    useNotificationListener();
+
   return (
-    <NavigationContainer>
-      <BottomTabBar tabs={tabs} />
-    </NavigationContainer>
+    
+    <BottomTabBar tabs={tabs} />
   );
 };
 
