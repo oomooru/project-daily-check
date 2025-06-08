@@ -1,11 +1,11 @@
 import { addDays, format, parseISO } from 'date-fns';
-import { TodoData, TodoDateData } from '../interface/TodoInterface';
-import { loadTodoDateData, saveTodoDateData } from '../system/AsyncStorage';
+import { TodoData, TodoDateData, TodoResetTime } from '../interface/TodoInterface';
+import { loadResetTime, loadTodoDateData, saveResetTime, saveTodoDateData } from '../system/AsyncStorage';
 
 class TodoManager {
   private static instance: TodoManager;
   private todoDateData: TodoDateData[] = [];
-  private today = new Date().toISOString().split('T')[0];
+  private resetTime: TodoResetTime = {hour: 0, minute: 0};
 
   private constructor() {}
 
@@ -18,6 +18,7 @@ class TodoManager {
 
   public async initialize(): Promise<void> {
     this.todoDateData = await loadTodoDateData();
+    this.resetTime = await loadResetTime();
   }
 
   public getTodoDateData(): TodoDateData[] {
@@ -25,18 +26,53 @@ class TodoManager {
   }
 
   public getToday(): string {
-    return this.today;
-  }
+  const now = new Date();
+
+  const resetHour = this.resetTime.hour;
+  const resetMinute = this.resetTime.minute;
+
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), resetHour, resetMinute, 0);
+  const todayStartTimestamp = todayStart.getTime();
+
+  const nowTimestamp = now.getTime();
+
+  const targetDate = nowTimestamp < todayStartTimestamp
+    ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+    : new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  const year = targetDate.getFullYear();
+  const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = targetDate.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
   public getTodosByDate(date: string): TodoData[] {
-    let todoDateData = this.todoDateData.find(todo => todo.date === date);
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), this.resetTime.hour, this.resetTime.minute, 0);
+    const currentResetTimestamp = todayStart.getTime();
+    const nowTimestamp = now.getTime();
 
+    const targetDateStr = (() => {
+      let targetDate = new Date();
+      
+      if (nowTimestamp < currentResetTimestamp) {
+        targetDate.setDate(targetDate.getDate() - 1);
+      }
+      
+      const year = targetDate.getFullYear();
+      const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = targetDate.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    })();
+    
+    let todoDateData = this.todoDateData.find(todo => todo.date === targetDateStr);
     if (!todoDateData && this.todoDateData.length > 0) {
       let lastTodoDateData = this.todoDateData[this.todoDateData.length - 1];
-      todoDateData = {...lastTodoDateData, todos: lastTodoDateData.todos.map(todo => ({ ...todo }))};
-      todoDateData.date = date;
-      todoDateData.todos.map(todo => todo.completed = false);
-
+      todoDateData = { ...lastTodoDateData, 
+                       todos: lastTodoDateData.todos.map(todo => ({ ...todo, completed: false })) 
+                     };
+      todoDateData.date = targetDateStr;
       this.todoDateData.push(todoDateData);
     }
 
@@ -79,7 +115,7 @@ class TodoManager {
     if (!completedTodos || completedTodos.length <= 1) return 0;
 
     const completedTodoDates = completedTodos.map(todo => todo.date);
-    let currDate = parseISO(this.today);
+    let currDate = parseISO(this.getToday());
     let count = 1;
 
     while (true) {
@@ -164,6 +200,12 @@ class TodoManager {
     this.todoDateData = [];
 
     await this.persistData();
+  }
+
+  public async setResetTime(resetTime: TodoResetTime) {
+    this.resetTime = resetTime;
+
+    await saveResetTime(resetTime);
   }
 
   private async persistData(): Promise<void> {

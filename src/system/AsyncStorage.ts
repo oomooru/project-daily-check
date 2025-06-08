@@ -1,31 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TodoData, TodoDateData } from "../interface/TodoInterface";
+import { TodoDateData, TodoResetTime } from "../interface/TodoInterface";
 
 const STORAGE_KEY = {
-  TODO_DATA: '@todoData',
   TODO_DATE_DATA: '@todoDateData',
-  LANGUAGE: '@language'
+  LANGUAGE: '@language',
+  RESET_TIME: '@resetTime'
 }
-
-export const saveTodoData = async (todos: TodoData[]): Promise<void> => {
-  try {
-    const json = JSON.stringify(todos);
-    await AsyncStorage.setItem(STORAGE_KEY.TODO_DATA, json);
-  } catch (e) {
-    console.error('Failed to save todo data', e);
-  }
-};
-
-export const loadTodoData = async (): Promise<TodoData[]> => {
-  try {
-    const json = await AsyncStorage.getItem(STORAGE_KEY.TODO_DATA);
-    const parsed: TodoData[] = json ? JSON.parse(json) : [];
-    return parsed;
-  } catch (e) {
-    console.error('Failed to load todo data', e);
-    return [];
-  }
-};
 
 export const saveTodoDateData = async (todoDateData: TodoDateData[]) : Promise<void> => {
   try {
@@ -64,5 +44,25 @@ export const loadLanguage = async (): Promise<string> => {
   } catch (e) {
     console.error('Failed to load language', e);
     return '';
+  }
+}
+
+export const saveResetTime = async (resetTime: TodoResetTime): Promise<void> => {
+  try {
+    const json = JSON.stringify(resetTime);
+    await AsyncStorage.setItem(STORAGE_KEY.RESET_TIME, json);
+  } catch (e) {
+    console.error('Failed to save reset time', e);
+  }
+}
+
+export const loadResetTime = async (): Promise<TodoResetTime> => {
+  try {
+  const json = await AsyncStorage.getItem(STORAGE_KEY.RESET_TIME);
+  const parsed: TodoResetTime = json ? JSON.parse(json) : [];
+  return parsed;
+  } catch (e) {
+    console.error('Failed to load reset time', e);
+    return {hour: 0, minute: 0};
   }
 }
