@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { SummaryTemplate } from "../templates/SummaryTemplate";
@@ -8,19 +8,28 @@ import { Card } from "../molecules/Card";
 import { LanguageSelector } from "../organisms/LanguageSelector";
 import { useLanguage } from "../../context/LanguageContext";
 import { TodoDeleteButton } from "../organisms/TodoDeleteButton";
+import { TimePicker } from "../organisms/TimePicker";
+import { TodoResetTime } from "../../interface/TodoInterface";
+import TodoManager from "../../manager/TodoManager";
 
 export const ConfigPage = () => {
   const { t } = useLanguage();
+  const [resetTime, setResetTime] = useState<TodoResetTime>(TodoManager.getResetTime());
 
   useFocusEffect(
     useCallback(() => {
-
+      setResetTime(TodoManager.getResetTime());
     }, [])
   );
 
   useEffect(() => {
-
+    
   }, []);
+
+  const onTimeChange = (resetTime: TodoResetTime) => {
+    setResetTime(resetTime);
+    TodoManager.setResetTime(resetTime);
+  }
 
   return (
     <SummaryTemplate
@@ -32,6 +41,15 @@ export const ConfigPage = () => {
               title={t('displayLanguage')}
               content={
                 <LanguageSelector />
+              }
+            />
+            <Card 
+              title={t('resetTime')}
+              content={
+                <TimePicker 
+                  currentResetTime={resetTime}
+                  onTimeChange={onTimeChange}
+                />
               }
             />
             <Card

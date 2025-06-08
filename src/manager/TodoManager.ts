@@ -202,6 +202,10 @@ class TodoManager {
     await this.persistData();
   }
 
+  public getResetTime() {
+    return this.resetTime;
+  }
+
   public async setResetTime(resetTime: TodoResetTime) {
     this.resetTime = resetTime;
 

@@ -4,5 +4,6 @@
   "selectedLanguage": "한국어",
   "todoDelete": "데이터 삭제",
   "deleteConfirmation": "데이터를 삭제하면 복구할 수 없습니다.\n정말로 삭제하시겠습니까?",
-  "cancel": "취소"
+  "cancel": "취소",
+  "resetTime": "날짜 변경 시간"
 }
