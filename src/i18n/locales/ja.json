@@ -4,6 +4,14 @@
   "selectedLanguage": "日本語",
   "todoDelete": "データ削除",
   "deleteConfirmation": "データを削除すると元に戻せません。\n本当に削除しますか？",
-  "cancel": "キャンセル",
-  "resetTime": "日付変更時間"
+  "cancel": "戻る",
+  "resetTime": "日付変更時間",
+  "todoComposerModalTitleAdd": "タスク追加",
+  "todoComposerModalTitleEdit": "タスク編集",
+  "todoComposerPostButtonTextAdd": "登録",
+  "todoComposerPostButtonTextEdit": "修正",
+  "todoComposerSubtitleTask": "タスク",
+  "todoComposerPlaceholderTask": "どのような予定ですか？",
+  "todoComposerSubtitleTag": "タグ",
+  "todoComposerPlaceholderTag": "「,」または「Enter」で複数入力"
 }
