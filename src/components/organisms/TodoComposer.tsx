@@ -22,6 +22,7 @@ import { Text } from "../atoms/Text";
 import FloatingButton from "../atoms/FloatingButton";
 import SvgIcon from "../atoms/SvgIcon";
 import { TodoData } from "../../interface/TodoInterface";
+import { useLanguage } from "../../context/LanguageContext";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const MAIN_HEADER_HEIGHT = 72;
@@ -56,6 +57,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   initialData,
   isSwiping
 }) => {
+  const { setLanguage, t } = useLanguage();
   
   const [todoText, setTodoText] = useState("");
   const [tagText, setTagText] = useState("");
@@ -74,8 +76,8 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     };
   });
 
-  const modalTitle = mode === 'Edit' ? "일과 편집" : "일과 추가";
-  const postButtonText = mode === 'Edit' ? "수정" : "등록";
+  const modalTitle = mode === 'Edit' ? t("todoComposerModalTitleEdit") : t("todoComposerModalTitleAdd");
+  const postButtonText = mode === 'Edit' ? t("todoComposerPostButtonTextEdit") : t("todoComposerPostButtonTextAdd");
 
   useEffect(() => {
     if (isVisible && mode === 'Edit' && initialData) {
@@ -176,7 +178,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
           >
             <View style={styles.modalHeader}>
               <Pressable onPress={toggleModal} style={styles.cancelButton}>
-                <Text style={styles.cancelButtonText}>{"취소"}</Text>
+                <Text style={styles.cancelButtonText}>{t("cancel")}</Text>
               </Pressable>
 
               <Text style={styles.modalTitle}>{modalTitle}</Text>
@@ -222,7 +224,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                       marginLeft: 6,
                     }}
                   >
-                    {"일과"}
+                    {t("todoComposerSubtitleTask")}
                   </Text>
                 </View>
 
@@ -230,7 +232,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                   ref={todoInputRef}
                   style={styles.todoInput}
                   multiline
-                  placeholder="어떤 일을 하실 예정인가요?"
+                  placeholder={t("todoComposerPlaceholderTask")}
                   placeholderTextColor={colors.primary}
                   value={todoText}
                   onChangeText={setTodoText}
@@ -260,7 +262,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                       marginTop: 2,
                     }}
                   >
-                    {"태그"}
+                    {t("todoComposerSubtitleTag")}
                   </Text>
                 </View>
 
@@ -268,7 +270,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                   <TextInput
                     ref={tagInputRef}
                     style={styles.tagInput}
-                    placeholder="',' 나 '엔터'로 여러 개 입력할 수 있어요."
+                    placeholder={t("todoComposerPlaceholderTag")}
                     placeholderTextColor={colors.primary}
                     value={tagText}
                     onChangeText={setTagText}
@@ -343,12 +345,13 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.secondary,
   },
   cancelButton: {
-    padding: 8,
+    marginLeft: 8,
+    marginRight: 16
   },
   cancelButtonText: {
     color: colors.primary,
     fontSize: 18,
-    marginRight: 8,
+    marginBottom: 0
   },
   modalTitle: {
     fontSize: 18,
@@ -358,7 +361,7 @@ const styles = StyleSheet.create({
   postButton: {
     backgroundColor: colors.primary,
     borderRadius: 20,
-    paddingVertical: 8,
+    paddingVertical: 6,
     paddingHorizontal: 16,
   },
   postButtonText: {
