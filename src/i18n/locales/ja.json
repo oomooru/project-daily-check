@@ -13,5 +13,7 @@
   "todoComposerSubtitleTask": "タスク",
   "todoComposerPlaceholderTask": "どのような予定ですか？",
   "todoComposerSubtitleTag": "タグ",
-  "todoComposerPlaceholderTag": "「,」または「Enter」で複数入力"
+  "todoComposerPlaceholderTag": "「,」または「Enter」で複数入力",
+  "calendarProgressTextEmpty": "記録がありません",
+  "calendarConsectutiveText": "{{count}}日連続達成!"
 }

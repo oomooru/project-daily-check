@@ -13,5 +13,7 @@
   "todoComposerSubtitleTask": "일과",
   "todoComposerPlaceholderTask": "어떤 일을 하실 예정인가요?",
   "todoComposerSubtitleTag": "태그",
-  "todoComposerPlaceholderTag": "',' 나 '엔터'로 여러 개 입력할 수 있어요."
+  "todoComposerPlaceholderTag": "',' 나 '엔터'로 여러 개 입력할 수 있어요.",
+  "calendarProgressTextEmpty": "기록이 없습니다",
+  "calendarConsectutiveText": "{{count}}일 연속 달성!"
 }

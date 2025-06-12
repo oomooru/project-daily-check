@@ -13,5 +13,7 @@
   "todoComposerSubtitleTask": "Task",
   "todoComposerPlaceholderTask": "What do you plan to do?",
   "todoComposerSubtitleTag": "Tags",
-  "todoComposerPlaceholderTag": "Separate tags with , or Enter."
+  "todoComposerPlaceholderTag": "Separate tags with , or Enter.",
+  "calendarProgressTextEmpty": "There is no record.",
+  "calendarConsectutiveText": "On a {{count}}-day streak!"
 }
