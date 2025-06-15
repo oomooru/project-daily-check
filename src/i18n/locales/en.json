@@ -15,5 +15,10 @@
   "todoComposerSubtitleTag": "Tags",
   "todoComposerPlaceholderTag": "Separate tags with , or Enter.",
   "calendarProgressTextEmpty": "There is no record.",
-  "calendarConsectutiveText": "On a {{count}}-day streak!"
+  "calendarConsectutiveText": "On a {{count}}-day streak!",
+  "summaryCurrentStreakTitle": "Current streak",
+  "summaryCurrentStreakDescription": "On a {{count}}-day streak",
+  "summaryCompletionLateTitle": "Completion late",
+  "summaryCompletedTagsTitle": "Completed Tags",
+  "summaryCompletedTagsNoData": "You have no tasks completed"
 }

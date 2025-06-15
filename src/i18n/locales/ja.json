@@ -15,5 +15,10 @@
   "todoComposerSubtitleTag": "タグ",
   "todoComposerPlaceholderTag": "「,」または「Enter」で複数入力",
   "calendarProgressTextEmpty": "記録がありません",
-  "calendarConsectutiveText": "{{count}}日連続達成!"
+  "calendarConsectutiveText": "{{count}}日連続達成!",
+  "summaryCurrentStreakTitle": "今の連続達成日数",
+  "summaryCurrentStreakDescription": "{{count}}日達成",
+  "summaryCompletionLateTitle": "日課達成率",
+  "summaryCompletedTagsTitle": "達成したタグ",
+  "summaryCompletedTagsNoData": "まだ達成したタスクがありません"
 }
