@@ -26,26 +26,26 @@ class TodoManager {
   }
 
   public getToday(): string {
-  const now = new Date();
+    const now = new Date();
 
-  const resetHour = this.resetTime.hour;
-  const resetMinute = this.resetTime.minute;
+    const resetHour = this.resetTime.hour;
+    const resetMinute = this.resetTime.minute;
 
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), resetHour, resetMinute, 0);
-  const todayStartTimestamp = todayStart.getTime();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), resetHour, resetMinute, 0);
+    const todayStartTimestamp = todayStart.getTime();
 
-  const nowTimestamp = now.getTime();
+    const nowTimestamp = now.getTime();
 
-  const targetDate = nowTimestamp < todayStartTimestamp
-    ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
-    : new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const targetDate = nowTimestamp < todayStartTimestamp
+      ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+      : new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  const year = targetDate.getFullYear();
-  const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
-  const day = targetDate.getDate().toString().padStart(2, '0');
+    const year = targetDate.getFullYear();
+    const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = targetDate.getDate().toString().padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
-}
+    return `${year}-${month}-${day}`;
+  }
 
   public getTodosByDate(date: string): TodoData[] {
     const now = new Date();
@@ -115,6 +115,9 @@ class TodoManager {
     if (!completedTodos || completedTodos.length <= 1) return 0;
 
     const completedTodoDates = completedTodos.map(todo => todo.date);
+
+    if (!completedTodoDates.includes(this.getToday())) return 0;
+
     let currDate = parseISO(this.getToday());
     let count = 1;
 
