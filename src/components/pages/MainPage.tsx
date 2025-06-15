@@ -6,6 +6,7 @@ import { TodoComposer } from '../organisms/TodoComposer';
 import SvgIcon from '../atoms/SvgIcon';
 import { TodoData } from '../../interface/TodoInterface';
 import TodoManager from '../../manager/TodoManager';
+import { registerForPushNotificationsAsync, scheduleNotification } from '../../services/NotificationService';
 
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<TodoData>>([]);
@@ -93,6 +94,9 @@ export const MainPage = () => {
     }
   
     fetchTodoData();
+
+    registerForPushNotificationsAsync();
+    scheduleNotification(0, 0);
   }, []);
   
   useFocusEffect(
