@@ -8,8 +8,10 @@ import { colors, interpolateColor } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
 import { BarChartItem } from "../molecules/BarChartItem";
 import { Card } from "../molecules/Card";
+import { useLanguage } from "../../context/LanguageContext";
 
 export const SummaryPage = () => {
+  const { t } = useLanguage();
   const [chartData, setChartData] = useState<Record<string, unknown>[]>([]);
   const [maxChartValue, setMaxChartValue] = useState<number>(0);
 
@@ -44,18 +46,18 @@ export const SummaryPage = () => {
         <View style={styles.container}>
           <ScrollView style={styles.scroll}>
             <Card
-              title="현재 연속 완료일"
+              title={t("summaryCurrentStreakTitle")}
               content={
                 <>
                   <Text
                     style={styles.summaryCardContentText}
-                  >{`${TodoManager.getConsecutiveDays()}일 달성`}</Text>
+                  >{t("summaryCurrentStreakDescription", {count: TodoManager.getConsecutiveDays()})}</Text>
                 </>
               }
             />
 
             <Card
-              title="일과 완료율"
+              title={t("summaryCompletionLateTitle")}
               content={
                 <>
                   <Text
@@ -66,13 +68,13 @@ export const SummaryPage = () => {
             />
 
             <Card
-              title="완료된 태그"
+              title={t("summaryCompletedTagsTitle")}
               content={
                 <>
                   {!chartData ||
                     (chartData.length === 0 && (
                       <Text style={styles.summaryCardContentText}>
-                        {"완료된 일과가 없습니다"}
+                        {t("summaryCompletedTagsNoData")}
                       </Text>
                     ))}
                   {chartData?.map((data, index) => (

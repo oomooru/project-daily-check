@@ -9,3 +9,8 @@ export interface TodoDateData {
   date: string,
   todos: TodoData[]
 }
+
+export interface TodoResetTime {
+  hour: number,
+  minute: number
+}

@@ -4,5 +4,21 @@
   "selectedLanguage": "English",
   "todoDelete": "Delete all data",
   "deleteConfirmation": "Deleted data cannot be recovered.\nAre you sure you want to delete?",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "resetTime": "Date change time",
+  "todoComposerModalTitleAdd": "Add Task",
+  "todoComposerModalTitleEdit": "Edit Task",
+  "todoComposerPostButtonTextAdd": "Add",
+  "todoComposerPostButtonTextEdit": "Edit",
+  "todoComposerSubtitleTask": "Task",
+  "todoComposerPlaceholderTask": "What do you plan to do?",
+  "todoComposerSubtitleTag": "Tags",
+  "todoComposerPlaceholderTag": "Separate tags with , or Enter.",
+  "calendarProgressTextEmpty": "There is no record.",
+  "calendarConsectutiveText": "On a {{count}}-day streak!",
+  "summaryCurrentStreakTitle": "Current streak",
+  "summaryCurrentStreakDescription": "On a {{count}}-day streak",
+  "summaryCompletionLateTitle": "Completion late",
+  "summaryCompletedTagsTitle": "Completed Tags",
+  "summaryCompletedTagsNoData": "You have no tasks completed"
 }

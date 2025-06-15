@@ -4,5 +4,21 @@
   "selectedLanguage": "한국어",
   "todoDelete": "데이터 삭제",
   "deleteConfirmation": "데이터를 삭제하면 복구할 수 없습니다.\n정말로 삭제하시겠습니까?",
-  "cancel": "취소"
+  "cancel": "취소",
+  "resetTime": "날짜 변경 시간",
+  "todoComposerModalTitleAdd": "일과 추가",
+  "todoComposerModalTitleEdit": "일과 편집",
+  "todoComposerPostButtonTextAdd": "등록",
+  "todoComposerPostButtonTextEdit": "수정",
+  "todoComposerSubtitleTask": "일과",
+  "todoComposerPlaceholderTask": "어떤 일을 하실 예정인가요?",
+  "todoComposerSubtitleTag": "태그",
+  "todoComposerPlaceholderTag": "',' 나 '엔터'로 여러 개 입력할 수 있어요.",
+  "calendarProgressTextEmpty": "기록이 없습니다",
+  "calendarConsectutiveText": "{{count}}일 연속 달성!",
+  "summaryCurrentStreakTitle": "현재 연속 달성일",
+  "summaryCurrentStreakDescription": "{{count}}일 달성",
+  "summaryCompletionLateTitle": "일과 완료율",
+  "summaryCompletedTagsTitle": "완료된 태그",
+  "summaryCompletedTagsNoData": "완료된 일과가 없습니다"
 }

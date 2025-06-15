@@ -10,8 +10,11 @@ import TodoManager from '../../manager/TodoManager';
 import { Text } from '../atoms/Text';
 import { formatDistance } from 'date-fns';
 import { GaugeBar } from '../atoms/GaugeBar';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const CalendarPage = () => {
+
+  const { setLanguage, t } = useLanguage();
 
   const [selectedDay, setSelectedDay] = useState('');
   const [recordedDays, setRecoredDays] = useState<string[]>([]);
@@ -117,9 +120,9 @@ export const CalendarPage = () => {
 
               <View style={styles.progressTextBox}>
                 {consecutiveCount > 1 && !selectedDay && (
-                  <Text style={styles.consecutiveText}>{`${consecutiveCount}일 연속 달성!`}</Text>
+                  <Text style={styles.consecutiveText}>{t("calendarConsectutiveText", {count: consecutiveCount})}</Text>
                 )}
-                <Text style={styles.progressText}>{progressText !== '' ? progressText : '기록이 없습니다'}</Text>
+                <Text style={styles.progressText}>{progressText !== '' ? progressText : t("calendarProgressTextEmpty")}</Text>
               </View>
 
               {progressText && (

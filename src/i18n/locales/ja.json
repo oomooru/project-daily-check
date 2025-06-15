@@ -4,5 +4,21 @@
   "selectedLanguage": "日本語",
   "todoDelete": "データ削除",
   "deleteConfirmation": "データを削除すると元に戻せません。\n本当に削除しますか？",
-  "cancel": "キャンセル"
+  "cancel": "戻る",
+  "resetTime": "日付変更時間",
+  "todoComposerModalTitleAdd": "タスク追加",
+  "todoComposerModalTitleEdit": "タスク編集",
+  "todoComposerPostButtonTextAdd": "登録",
+  "todoComposerPostButtonTextEdit": "修正",
+  "todoComposerSubtitleTask": "タスク",
+  "todoComposerPlaceholderTask": "どのような予定ですか？",
+  "todoComposerSubtitleTag": "タグ",
+  "todoComposerPlaceholderTag": "「,」または「Enter」で複数入力",
+  "calendarProgressTextEmpty": "記録がありません",
+  "calendarConsectutiveText": "{{count}}日連続達成!",
+  "summaryCurrentStreakTitle": "今の連続達成日数",
+  "summaryCurrentStreakDescription": "{{count}}日達成",
+  "summaryCompletionLateTitle": "日課達成率",
+  "summaryCompletedTagsTitle": "達成したタグ",
+  "summaryCompletedTagsNoData": "まだ達成したタスクがありません"
 }
