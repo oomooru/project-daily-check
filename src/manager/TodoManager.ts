@@ -1,11 +1,12 @@
 import { addDays, format, parseISO } from 'date-fns';
-import { TodoData, TodoDateData, TodoResetTime } from '../interface/TodoInterface';
-import { loadResetTime, loadTodoDateData, saveResetTime, saveTodoDateData } from '../system/AsyncStorage';
+import { NotificationTime, TodoData, TodoDateData, TodoResetTime } from '../interface/TodoInterface';
+import { loadNotificationTime, loadResetTime, loadTodoDateData, saveNotificationTime, saveResetTime, saveTodoDateData } from '../system/AsyncStorage';
 
 class TodoManager {
   private static instance: TodoManager;
   private todoDateData: TodoDateData[] = [];
   private resetTime: TodoResetTime = {hour: 0, minute: 0};
+  private notificationTime: NotificationTime = {hour: 0 , minute: 0};
 
   private constructor() {}
 
@@ -19,6 +20,7 @@ class TodoManager {
   public async initialize(): Promise<void> {
     this.todoDateData = await loadTodoDateData();
     this.resetTime = await loadResetTime();
+    this.notificationTime = await loadNotificationTime();
   }
 
   public getTodoDateData(): TodoDateData[] {
@@ -209,10 +211,20 @@ class TodoManager {
     return this.resetTime;
   }
 
+  public getNotificationTime() {
+    return this.notificationTime;
+  }
+
   public async setResetTime(resetTime: TodoResetTime) {
     this.resetTime = resetTime;
 
     await saveResetTime(resetTime);
+  }
+
+  public async setNotificationTime(notificationTime: NotificationTime) {
+    this.notificationTime = notificationTime;
+
+    await saveNotificationTime(notificationTime);
   }
 
   private async persistData(): Promise<void> {

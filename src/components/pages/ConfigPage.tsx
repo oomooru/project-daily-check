@@ -9,16 +9,19 @@ import { LanguageSelector } from "../organisms/LanguageSelector";
 import { useLanguage } from "../../context/LanguageContext";
 import { TodoDeleteButton } from "../organisms/TodoDeleteButton";
 import { TimePicker } from "../organisms/TimePicker";
-import { TodoResetTime } from "../../interface/TodoInterface";
+import { NotificationTime, TodoResetTime } from "../../interface/TodoInterface";
 import TodoManager from "../../manager/TodoManager";
+import { scheduleNotification } from "../../services/NotificationService";
 
 export const ConfigPage = () => {
   const { t } = useLanguage();
   const [resetTime, setResetTime] = useState<TodoResetTime>(TodoManager.getResetTime());
+  const [notificationTime, setNotificationTime] = useState<NotificationTime>(TodoManager.getNotificationTime());
 
   useFocusEffect(
     useCallback(() => {
       setResetTime(TodoManager.getResetTime());
+      setNotificationTime(TodoManager.getNotificationTime());
     }, [])
   );
 
@@ -26,9 +29,16 @@ export const ConfigPage = () => {
     
   }, []);
 
-  const onTimeChange = (resetTime: TodoResetTime) => {
+  const onResetTimeChange = (resetTime: TodoResetTime) => {
     setResetTime(resetTime);
     TodoManager.setResetTime(resetTime);
+  }
+
+  const onNotificationTimeChange = (notificationTime: NotificationTime) => {
+    setNotificationTime(notificationTime);
+    TodoManager.setNotificationTime(notificationTime);
+
+    scheduleNotification(notificationTime);
   }
 
   return (
@@ -48,7 +58,16 @@ export const ConfigPage = () => {
               content={
                 <TimePicker 
                   currentResetTime={resetTime}
-                  onTimeChange={onTimeChange}
+                  onTimeChange={onResetTimeChange}
+                />
+              }
+            />
+            <Card 
+              title={t('configNotificationTime')}
+              content={
+                <TimePicker 
+                  currentResetTime={notificationTime}
+                  onTimeChange={onNotificationTimeChange}
                 />
               }
             />

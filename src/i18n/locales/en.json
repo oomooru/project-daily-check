@@ -20,5 +20,6 @@
   "summaryCurrentStreakDescription": "On a {{count}}-day streak",
   "summaryCompletionLateTitle": "Completion late",
   "summaryCompletedTagsTitle": "Completed Tags",
-  "summaryCompletedTagsNoData": "You have no tasks completed"
+  "summaryCompletedTagsNoData": "You have no tasks completed",
+  "configNotificationTime": "Notification timing"
 }
