@@ -96,7 +96,9 @@ export const MainPage = () => {
     fetchTodoData();
 
     registerForPushNotificationsAsync();
-    scheduleNotification(0, 0);
+
+    const notificationTime = TodoManager.getNotificationTime();
+    scheduleNotification(notificationTime);
   }, []);
   
   useFocusEffect(

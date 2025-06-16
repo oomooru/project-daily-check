@@ -20,5 +20,6 @@
   "summaryCurrentStreakDescription": "{{count}}日達成",
   "summaryCompletionLateTitle": "日課達成率",
   "summaryCompletedTagsTitle": "達成したタグ",
-  "summaryCompletedTagsNoData": "まだ達成したタスクがありません"
+  "summaryCompletedTagsNoData": "まだ達成したタスクがありません",
+  "configNotificationTime": "プッシュ通知時間"
 }

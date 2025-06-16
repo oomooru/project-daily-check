@@ -14,3 +14,8 @@ export interface TodoResetTime {
   hour: number,
   minute: number
 }
+
+export interface NotificationTime {
+  hour: number,
+  minute: number
+}

@@ -20,5 +20,6 @@
   "summaryCurrentStreakDescription": "{{count}}일 달성",
   "summaryCompletionLateTitle": "일과 완료율",
   "summaryCompletedTagsTitle": "완료된 태그",
-  "summaryCompletedTagsNoData": "완료된 일과가 없습니다"
+  "summaryCompletedTagsNoData": "완료된 일과가 없습니다",
+  "configNotificationTime": "알림 시간"
 }

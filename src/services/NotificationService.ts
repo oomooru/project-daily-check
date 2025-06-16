@@ -1,5 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import TodoManager from '../manager/TodoManager';
+import { NotificationTime } from '../interface/TodoInterface';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -29,7 +31,7 @@ export async function registerForPushNotificationsAsync() {
   }
 }
 
-export async function scheduleNotification(hour: number, minute: number) {
+export async function scheduleNotification(notificationTime: NotificationTime) {
 
   await Notifications.cancelAllScheduledNotificationsAsync();
 
@@ -38,11 +40,10 @@ export async function scheduleNotification(hour: number, minute: number) {
       title: '일정 확인 알림',
       body: '아직 완료하지 않은 일정이 있는지 확인해보세요.',
     },
-    trigger: null
-    // trigger: {
-    //   type: Notifications.SchedulableTriggerInputTypes.DAILY,
-    //   hour: hour,
-    //   minute: minute
-    // },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
+      hour: notificationTime.hour,
+      minute: notificationTime.minute
+    },
   });
 }
