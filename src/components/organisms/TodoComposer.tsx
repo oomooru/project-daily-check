@@ -57,7 +57,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   initialData,
   isSwiping
 }) => {
-  const { setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
   
   const [todoText, setTodoText] = useState("");
   const [tagText, setTagText] = useState("");
@@ -196,9 +196,9 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
             </View>
 
             <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              behavior={Platform.OS === "ios" ? "padding" : undefined}
               style={styles.inputContainer}
-              keyboardVerticalOffset={8}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
             >
               <ScrollView style={styles.textScrollContainer}>
                 <View

@@ -50,7 +50,6 @@ export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ childr
         
         setIsReady(true);
       } catch (error) {
-        console.error('Language initialization failed:', error);
         i18n.locale = 'en';
         setLanguage('en');
         setIsReady(true);
