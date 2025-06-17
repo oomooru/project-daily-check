@@ -124,7 +124,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     floatingButtonOpacity.value = withTiming(isSwiping ? 0 : 1, {
       duration: 150,
     });
-  }, [isSwiping])
+  }, [isSwiping]);
 
   const toggleModal = () => {
     onClose();

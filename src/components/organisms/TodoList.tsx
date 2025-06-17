@@ -57,7 +57,7 @@ function LeftAction(
 function RightAction(
   prog: SharedValue<number>, 
   drag: SharedValue<number>,
-  onPress: () => void 
+  onPress: () => void
 ) {
   const styleAnimation = useAnimatedStyle(() => {
     const width = Math.max(Math.min(Math.abs(drag.value), 150), 80);
