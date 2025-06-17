@@ -36,6 +36,8 @@ export const MainPage = () => {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter(todo => todo.id !== id));
+
+    setIsSwiping(false);
   };
 
   const updateTodo = (updatedItem: TodoData) => {
