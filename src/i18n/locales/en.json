@@ -21,5 +21,6 @@
   "summaryCompletionLateTitle": "Completion late",
   "summaryCompletedTagsTitle": "Completed Tags",
   "summaryCompletedTagsNoData": "You have no tasks completed",
-  "configNotificationTime": "Notification timing"
+  "configNotificationTime": "Notification timing",
+  "mainWelcomeText": "Welcome to MintyBoard.\nTap the [ + ] button below to add a task!"
 }

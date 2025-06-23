@@ -7,8 +7,15 @@ import SvgIcon from '../atoms/SvgIcon';
 import { TodoData } from '../../interface/TodoInterface';
 import TodoManager from '../../manager/TodoManager';
 import { registerForPushNotificationsAsync, scheduleNotification } from '../../services/NotificationService';
+import AddButton from '../atoms/AddButton';
+import { Text } from '../atoms/Text';
+import { useLanguage } from '../../context/LanguageContext';
+import { View } from 'react-native';
+import { colors } from '../../constants/Colors';
 
 export const MainPage = () => {
+  const { t } = useLanguage();
+
   const [todos, setTodos] = useState<Array<TodoData>>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>();
   const [composerState, setComposerState] = useState<{
@@ -20,7 +27,6 @@ export const MainPage = () => {
     mode: 'Add',
     editingItem: null
   });
-  const [isSwiping, setIsSwiping] = useState(false);
 
   const addTodo = (text: string, tags: string[]) => {
     setTodos([...todos, { id: Date.now().toString(), text, tags, completed: false }]);
@@ -36,8 +42,6 @@ export const MainPage = () => {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter(todo => todo.id !== id));
-
-    setIsSwiping(false);
   };
 
   const updateTodo = (updatedItem: TodoData) => {
@@ -116,23 +120,35 @@ export const MainPage = () => {
       }
       content={
         <>
-          <TodoList
+          {todos.length === 0 && (
+            <>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <View style={{ alignSelf: 'center', marginBottom: 32 }}><SvgIcon name="Dog" width={160} height ={245} /></View>
+              <Text style={{ color: colors.primary, textAlign: 'center' }}>{t("mainWelcomeText")}</Text>
+            </View>
+            </>
+          )}
+
+          {todos.length > 0 && (
+            <TodoList
             todoItems={todos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
             onEdit={openEditMode}
-            onSwipeStart={() => setIsSwiping(true)}
-            onSwipeEnd={() => setIsSwiping(false)}
+          />
+          )}
+
+          <AddButton 
+            style={{margin: 16, padding: 8}}
+            onPress={openAddMode} 
           />
 
           <TodoComposer 
             onPost={handlePost}
-            onOpenAddMode={openAddMode}
             isVisible={composerState.isVisible}
             onClose={closeComposer}
             mode={composerState.mode}
             initialData={composerState.editingItem}
-            isSwiping={isSwiping}
           />
         </>
       }

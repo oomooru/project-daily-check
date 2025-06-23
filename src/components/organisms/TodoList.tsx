@@ -14,8 +14,6 @@ interface TodoListProps {
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: (editItem: TodoData) => void;
-  onSwipeStart: () => void;
-  onSwipeEnd: () => void;
 }
 
 const triggerHaptic = async () => {
@@ -86,19 +84,15 @@ export const TodoList: React.FC<TodoListProps> = ({
   todoItems,
   onToggle,
   onDelete,
-  onEdit,
-  onSwipeStart,
-  onSwipeEnd
+  onEdit
 }) => {
 
   const swipeableRefs = useRef<{[key: string]: SwipeableMethods | null}>({});
 
   const handleSwipeableOpen = (id: string) => {
-    onSwipeStart();
-
     Object.entries(swipeableRefs.current).forEach(([itemId, ref]) => {
       if (itemId !== id && ref) {
-        ref.reset();
+        ref.close();
       }
     });
   };
@@ -110,7 +104,6 @@ export const TodoList: React.FC<TodoListProps> = ({
           key={item.id}
           ref={(ref) => {swipeableRefs.current[item.id] = ref}}
           onSwipeableWillOpen={() => handleSwipeableOpen(item.id)}
-          onSwipeableWillClose={onSwipeEnd}
           rightThreshold={40}
           renderRightActions={(prog, drag) =>
             RightAction(prog, drag, () => onEdit(item))

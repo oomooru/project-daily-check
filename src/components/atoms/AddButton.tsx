@@ -3,12 +3,12 @@ import { StyleSheet, ViewStyle, Pressable } from 'react-native';
 import SvgIcon from './SvgIcon';
 import { colors } from '../../constants/Colors';
 
-interface FloatingButtonProps {
+interface AddButtonProps {
   onPress: () => void;
   style?: ViewStyle;
 }
 
-const FloatingButton: React.FC<FloatingButtonProps> = ({ onPress, style }) => {
+const AddButton: React.FC<AddButtonProps> = ({ onPress, style }) => {
   return (
     <Pressable 
       style={[styles.container, style]}
@@ -28,19 +28,11 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onPress, style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    borderRadius: 8,
     backgroundColor: colors.primary,
     justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 8,
-    shadowColor: colors.background,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
+    alignItems: 'center'
   },
 });
 
-export default FloatingButton;
+export default AddButton;

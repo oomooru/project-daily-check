@@ -19,7 +19,6 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
-import FloatingButton from "../atoms/FloatingButton";
 import SvgIcon from "../atoms/SvgIcon";
 import { TodoData } from "../../interface/TodoInterface";
 import { useLanguage } from "../../context/LanguageContext";
@@ -29,12 +28,10 @@ const MAIN_HEADER_HEIGHT = 72;
 
 interface TodoComposerProps {
   onPost: (text: string, tags: string[]) => void;
-  onOpenAddMode: () => void;
   isVisible: boolean;
   onClose: () => void;
   mode: 'Add' | 'Edit';
   initialData : TodoData | null;
-  isSwiping: boolean;
 }
 
 const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
@@ -50,12 +47,10 @@ const Tag = ({ text, onRemove }: { text: string; onRemove?: () => void }) => (
 
 export const TodoComposer: React.FC<TodoComposerProps> = ({ 
   onPost,
-  onOpenAddMode,
   isVisible,
   onClose,
   mode,
-  initialData,
-  isSwiping
+  initialData
 }) => {
   const { t } = useLanguage();
   
@@ -68,13 +63,6 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
   const tagInputRef = useRef<TextInput>(null);
 
   const modalHeight = SCREEN_HEIGHT - insets.top;
-
-  const floatingButtonOpacity = useSharedValue(1);
-  const floatingButtonStyle = useAnimatedStyle(() => {
-    return {
-      opacity: floatingButtonOpacity.value,
-    };
-  });
 
   const modalTitle = mode === 'Edit' ? t("todoComposerModalTitleEdit") : t("todoComposerModalTitleAdd");
   const postButtonText = mode === 'Edit' ? t("todoComposerPostButtonTextEdit") : t("todoComposerPostButtonTextAdd");
@@ -120,12 +108,6 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
     }
   }, [isVisible]);
 
-  useEffect(() => {
-    floatingButtonOpacity.value = withTiming(isSwiping ? 0 : 1, {
-      duration: 150,
-    });
-  }, [isSwiping]);
-
   const toggleModal = () => {
     onClose();
   };
@@ -158,10 +140,6 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.floatingButton, floatingButtonStyle]}>
-        <FloatingButton onPress={onOpenAddMode} />
-      </Animated.View>
-
       {isVisible && (
         <View
           style={[
@@ -322,7 +300,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: 0,
+    height: 0
   },
   modalOverlay: {
     ...StyleSheet.absoluteFillObject,

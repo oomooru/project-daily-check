@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { Button } from '../atoms/Button';
+import { Button } from '../atoms/AddButton';
 import { colors } from '../../constants/Colors';
 
 interface InputWithButtonProps {
