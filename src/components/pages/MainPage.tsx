@@ -121,9 +121,12 @@ export const MainPage = () => {
       content={
         <>
           {todos.length === 0 && (
+            <>
             <View style={{ flex: 1, justifyContent: 'center' }}>
+              <View style={{ alignSelf: 'center', marginBottom: 32 }}><SvgIcon name="Dog" width={160} height ={245} /></View>
               <Text style={{ color: colors.primary, textAlign: 'center' }}>{t("mainWelcomeText")}</Text>
             </View>
+            </>
           )}
 
           {todos.length > 0 && (
