@@ -362,11 +362,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
   },
-  floatingButton: {
-    position: "absolute",
-    bottom: 64,
-    right: 64,
-  },
   tagContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
