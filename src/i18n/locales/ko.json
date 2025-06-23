@@ -21,5 +21,6 @@
   "summaryCompletionLateTitle": "일과 완료율",
   "summaryCompletedTagsTitle": "완료된 태그",
   "summaryCompletedTagsNoData": "완료된 일과가 없습니다",
-  "configNotificationTime": "알림 시간"
+  "configNotificationTime": "알림 시간",
+  "mainWelcomeText": "MintyBoard에 온 것을 환영해요.\n아래 [ + ] 버튼을 탭 해 일과를 추가해 보세요!"
 }

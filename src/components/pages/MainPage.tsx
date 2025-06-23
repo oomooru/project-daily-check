@@ -8,8 +8,14 @@ import { TodoData } from '../../interface/TodoInterface';
 import TodoManager from '../../manager/TodoManager';
 import { registerForPushNotificationsAsync, scheduleNotification } from '../../services/NotificationService';
 import AddButton from '../atoms/AddButton';
+import { Text } from '../atoms/Text';
+import { useLanguage } from '../../context/LanguageContext';
+import { View } from 'react-native';
+import { colors } from '../../constants/Colors';
 
 export const MainPage = () => {
+  const { t } = useLanguage();
+
   const [todos, setTodos] = useState<Array<TodoData>>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>();
   const [composerState, setComposerState] = useState<{
@@ -114,12 +120,20 @@ export const MainPage = () => {
       }
       content={
         <>
-          <TodoList
+          {todos.length === 0 && (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Text style={{ color: colors.primary, textAlign: 'center' }}>{t("mainWelcomeText")}</Text>
+            </View>
+          )}
+
+          {todos.length > 0 && (
+            <TodoList
             todoItems={todos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
             onEdit={openEditMode}
           />
+          )}
 
           <AddButton 
             style={{margin: 16, padding: 8}}

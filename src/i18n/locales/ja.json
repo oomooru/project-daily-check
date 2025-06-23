@@ -21,5 +21,6 @@
   "summaryCompletionLateTitle": "日課達成率",
   "summaryCompletedTagsTitle": "達成したタグ",
   "summaryCompletedTagsNoData": "まだ達成したタスクがありません",
-  "configNotificationTime": "プッシュ通知時間"
+  "configNotificationTime": "プッシュ通知時間",
+  "mainWelcomeText": "MintyBoardへようこそ。\n下の「+」ボタンをタップしてタスクを追加しましょう!"
 }
