@@ -7,6 +7,7 @@ import SvgIcon from '../atoms/SvgIcon';
 import { TodoData } from '../../interface/TodoInterface';
 import TodoManager from '../../manager/TodoManager';
 import { registerForPushNotificationsAsync, scheduleNotification } from '../../services/NotificationService';
+import AddButton from '../atoms/AddButton';
 
 export const MainPage = () => {
   const [todos, setTodos] = useState<Array<TodoData>>([]);
@@ -20,7 +21,6 @@ export const MainPage = () => {
     mode: 'Add',
     editingItem: null
   });
-  const [isSwiping, setIsSwiping] = useState(false);
 
   const addTodo = (text: string, tags: string[]) => {
     setTodos([...todos, { id: Date.now().toString(), text, tags, completed: false }]);
@@ -36,8 +36,6 @@ export const MainPage = () => {
 
   const deleteTodo = (id: string) => {
     setTodos(todos.filter(todo => todo.id !== id));
-
-    setIsSwiping(false);
   };
 
   const updateTodo = (updatedItem: TodoData) => {
@@ -121,18 +119,19 @@ export const MainPage = () => {
             onToggle={toggleTodo}
             onDelete={deleteTodo}
             onEdit={openEditMode}
-            onSwipeStart={() => setIsSwiping(true)}
-            onSwipeEnd={() => setIsSwiping(false)}
+          />
+
+          <AddButton 
+            style={{margin: 16, padding: 8}}
+            onPress={openAddMode} 
           />
 
           <TodoComposer 
             onPost={handlePost}
-            onOpenAddMode={openAddMode}
             isVisible={composerState.isVisible}
             onClose={closeComposer}
             mode={composerState.mode}
             initialData={composerState.editingItem}
-            isSwiping={isSwiping}
           />
         </>
       }
