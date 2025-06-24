@@ -10,3 +10,4 @@ export {default as Hashtag} from './hashtag.svg';
 export {default as Summary} from './summary.svg';
 export {default as Config} from './config.svg';
 export {default as Dog} from './dog.svg';
+export {default as Lightning} from './lightning.svg';
