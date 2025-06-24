@@ -20,14 +20,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../constants/Colors";
 import { Text } from "../atoms/Text";
 import SvgIcon from "../atoms/SvgIcon";
-import { TodoData } from "../../interface/TodoInterface";
+import { TodoData, TodoType } from "../../interface/TodoInterface";
 import { useLanguage } from "../../context/LanguageContext";
+import RadioButtonContainer from "./RadioButtonContainer";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const MAIN_HEADER_HEIGHT = 72;
 
 interface TodoComposerProps {
-  onPost: (text: string, tags: string[]) => void;
+  onPost: (type: TodoType, text: string, tags: string[]) => void;
   isVisible: boolean;
   onClose: () => void;
   mode: 'Add' | 'Edit';
@@ -54,6 +55,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  const [todoType, setTodoType] = useState<TodoType>('daily');
   const [todoText, setTodoText] = useState("");
   const [tagText, setTagText] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -120,7 +122,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
 
   const handlePost = () => {
     toggleModal();
-    onPost(todoText, tags);
+    onPost(todoType, todoText, tags);
   };
 
   const addTag = (tag: string) => {
@@ -179,6 +181,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
               keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
             >
               <ScrollView style={styles.textScrollContainer}>
+
                 <View
                   style={{
                     flexDirection: "row",
@@ -187,19 +190,39 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                     paddingVertical: 8,
                   }}
                 >
-                  <SvgIcon
-                    name="CheckSquare"
-                    width={24}
-                    height={24}
-                    color={colors.textWhite}
-                    strokeWidth={3}
-                  />
                   <Text
                     variant="title"
                     style={{
                       color: colors.textWhite,
                       fontSize: 18,
-                      marginLeft: 6,
+                    }}
+                  >
+                    {t("todoComposerSubtitleTypeTitle")}
+                  </Text>
+                </View>
+
+                <RadioButtonContainer 
+                  options={[
+                    {label: t("todoComposerSubtitleTypeDaily"), icon: 'IconClock', value: 'daily'},
+                    {label: t("todoComposerSubtitleTypeFlash"), icon: 'Lightning', value: 'flash'}
+                  ]}
+                  onValueChange={(value) => setTodoType(value as TodoType)}
+                  defaultValue='daily'
+                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignContent: "center",
+                    justifyContent: "flex-start",
+                    paddingVertical: 8,
+                  }}
+                >
+                  <Text
+                    variant="title"
+                    style={{
+                      color: colors.textWhite,
+                      fontSize: 18,
                     }}
                   >
                     {t("todoComposerSubtitleTask")}
@@ -224,20 +247,11 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                     paddingVertical: 8,
                   }}
                 >
-                  <SvgIcon
-                    name="Hashtag"
-                    width={24}
-                    height={24}
-                    color={colors.textWhite}
-                    strokeWidth={3}
-                  />
                   <Text
                     variant="title"
                     style={{
                       color: colors.textWhite,
                       fontSize: 18,
-                      marginLeft: 6,
-                      marginTop: 2,
                     }}
                   >
                     {t("todoComposerSubtitleTag")}
@@ -276,7 +290,7 @@ export const TodoComposer: React.FC<TodoComposerProps> = ({
                   </Pressable>
                 </View>
 
-                <View style={{ width: "100%", height: 2, backgroundColor: colors.primary, marginBottom: 8 }} />
+                <View style={{ width: "100%", height: 1, backgroundColor: colors.secondary, marginBottom: 8 }} />
 
                 {tags.length > 0 && (
                   <View style={styles.tagsRow}>
@@ -364,7 +378,6 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     flexDirection: "row",
-    flexWrap: "wrap",
     alignItems: "center",
     backgroundColor: colors.secondary,
     borderRadius: 8,

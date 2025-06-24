@@ -75,6 +75,7 @@ class TodoManager {
                        todos: lastTodoDateData.todos.map(todo => ({ ...todo, completed: false })) 
                      };
       todoDateData.date = targetDateStr;
+      todoDateData.todos = todoDateData.todos.filter(todo => todo.type === 'daily');
       this.todoDateData.push(todoDateData);
     }
 

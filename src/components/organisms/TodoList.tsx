@@ -116,6 +116,7 @@ export const TodoList: React.FC<TodoListProps> = ({
         >
           <TodoItem
             key={`todoitem-${item.id}`}
+            type={item.type}
             text={item.text}
             completed={item.completed}
             tags={item.tags}
