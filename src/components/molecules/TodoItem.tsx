@@ -4,9 +4,11 @@ import { Text } from "../atoms/Text";
 import { colors } from "../../constants/Colors";
 import SvgIcon from "../atoms/SvgIcon";
 import { TagBox } from "../atoms/TagBox";
+import { TodoType } from "../../interface/TodoInterface";
 
 interface TodoItemProps {
   text: string;
+  type: TodoType;
   completed: boolean;
   tags: string[];
   onToggle: () => void;
@@ -14,6 +16,7 @@ interface TodoItemProps {
 
 export const TodoItem: React.FC<TodoItemProps> = ({
   text,
+  type,
   completed,
   tags,
   onToggle
@@ -25,7 +28,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       <View style={styles.textBox}>
         <View style={{ paddingRight: 8 }}>
           <SvgIcon
-            name="IconClock"
+            name={type === 'daily' ? "IconClock" : "Lightning"}
             width={24}
             height={24}
             color={colors.textWhite}
