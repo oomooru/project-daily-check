@@ -14,7 +14,7 @@ import { useLanguage } from '../../context/LanguageContext';
 
 export const CalendarPage = () => {
 
-  const { setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
 
   const [selectedDay, setSelectedDay] = useState('');
   const [recordedDays, setRecoredDays] = useState<string[]>([]);

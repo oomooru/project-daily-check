@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   modalTitleText: {
     fontSize: 20,
     color: colors.textWhite,
-    paddingVertical: 8
+    paddingVertical: 8,
+    marginBottom: 4
   }
 });

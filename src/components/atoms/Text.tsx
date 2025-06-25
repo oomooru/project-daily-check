@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text as RNText, TextStyle, LayoutChangeEvent } from 'react-native';
 import { colors } from '../../constants/Colors';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface TextProps {
   children: React.ReactNode;
@@ -15,6 +16,9 @@ export const Text: React.FC<TextProps> = ({
   variant = 'body',
   onLayout
 }) => {
+
+  const {language} = useLanguage();
+
   const variantStyles = {
     title: { fontSize: 16, fontWeight: 'bold' },
     body: { fontSize: 16 },
@@ -23,7 +27,7 @@ export const Text: React.FC<TextProps> = ({
 
   return (
     <RNText 
-      style={[variantStyles[variant], style]}
+      style={[variantStyles[variant], style, {fontFamily: language === 'ja' ? 'NotoSansKR' : 'NotoSansJP'}]}
       onLayout={onLayout}
     >
       {children}
