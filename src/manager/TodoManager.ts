@@ -113,7 +113,7 @@ class TodoManager {
   }
 
   public getConsecutiveDays() {
-    const completedTodos = this.todoDateData.filter(todoData => todoData.todos.every(todo => todo.completed));
+    const completedTodos = this.todoDateData.filter(todoData => todoData.todos.length > 0 && todoData.todos.every(todo => todo.completed));
 
     if (!completedTodos || completedTodos.length <= 1) return 0;
 
