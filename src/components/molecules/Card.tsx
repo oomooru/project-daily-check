@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: "center",
     marginHorizontal: 16,
-    marginTop: 16,
+    marginVertical: 8,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: colors.secondary,
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.textWhite,
     paddingVertical: 8,
+    marginBottom: 4
   },
   cardContentBox: {
     flex: 1,

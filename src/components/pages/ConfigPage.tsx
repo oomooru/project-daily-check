@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     height: "100%",
+    paddingVertical: 8
   },
   summaryCardContentText: {
     width: "100%",

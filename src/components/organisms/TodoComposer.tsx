@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: colors.primary,
     fontSize: 18,
-    marginBottom: 0
+    paddingTop: 4
   },
   modalTitle: {
     fontSize: 18,
@@ -353,13 +353,13 @@ const styles = StyleSheet.create({
   postButton: {
     backgroundColor: colors.primary,
     borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 16,
   },
   postButtonText: {
     color: colors.textBlack,
     fontWeight: "bold",
     fontSize: 16,
+    marginVertical: 6,
+    marginHorizontal: 16
   },
   inputContainer: {
     flex: 1,
