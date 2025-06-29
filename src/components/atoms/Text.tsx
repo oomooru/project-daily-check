@@ -19,9 +19,9 @@ export const Text: React.FC<TextProps> = ({
   const { language } = useLanguage();
 
   const variantStyles = {
-    title: { fontSize: 16, fontWeight: "bold" },
-    body: { fontSize: 16 },
-    caption: { fontSize: 12 },
+    title: { fontSize: 16, lineHeight: 24, fontWeight: "bold" },
+    body: { fontSize: 16, lineHeight: 24 },
+    caption: { fontSize: 12, lineHeight: 18 },
   };
 
   return (

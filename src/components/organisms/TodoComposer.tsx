@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    height: 64,
+    minHeight: 64,
     borderBottomWidth: 1,
     borderBottomColor: colors.secondary,
   },
