@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 36,
+    lineHeight: 48,
     color: colors.primary
   },
   consecutiveTextBox: {

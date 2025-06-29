@@ -32,7 +32,7 @@ export const Text: React.FC<TextProps> = ({
         { 
           fontFamily: language === "ja" ? "NotoSansKR" : "NotoSansJP",
           includeFontPadding: false,
-          textAlignVertical: 'top',
+          textAlignVertical: 'center',
         },
       ]}
       onLayout={onLayout}
