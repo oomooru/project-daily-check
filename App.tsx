@@ -13,8 +13,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
-    NotoSansKR: require("./assets/fonts/NotoSansKR-VariableFont_wght.ttf"),
-    NotoSansJP: require("./assets/fonts/NotoSansJP-VariableFont_wght.ttf"),
+    NotoSansKR: require("./assets/fonts/NotoSansKR_VariableFont_wght.ttf"),
+    NotoSansJP: require("./assets/fonts/NotoSansJP_VariableFont_wght.ttf"),
   });
 
   useEffect(() => {
