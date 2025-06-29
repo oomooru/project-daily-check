@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   cardTitleText: {
     flex: 1,
     fontSize: 20,
+    lineHeight: 28,
     color: colors.textWhite,
     paddingVertical: 8,
     marginBottom: 4
